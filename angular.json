@@ -57,7 +57,7 @@
               "sourceMap": true
             },
             "github-pages": {
-              "outputPath": "docs",
+              "outputPath": "docs/browser",
               "baseHref": "/Employee-Management---FE/"
             }
 
