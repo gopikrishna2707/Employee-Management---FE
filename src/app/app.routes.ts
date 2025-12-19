@@ -6,7 +6,7 @@ import { EditEmployeeComponent } from './employee-details/edit-employee/edit-emp
 
 export const PATH_EMPLOYEE:string = 'api/employee';
 export const PATH_ADD_EMPLOYEE:string = 'api/employee/action:add';
-export const PATH_EDIT_EMPLOYEE:string = 'api/employee/action:edit/:eid';
+export const PATH_EDIT_EMPLOYEE:string = 'api/employee/action:edit/';
 export const PATH_EMPLOYEE_DETAILS:string = 'api/employee/details';
 export const PATH_HOME:string = '';
 

@@ -55,7 +55,12 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "github-pages": {
+              "outputPath": "docs",
+              "baseHref": "/Employee-Management---FE/"
             }
+
           },
           "defaultConfiguration": "production"
         },
