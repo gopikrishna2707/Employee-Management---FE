@@ -16,6 +16,7 @@ export const routes: Routes = [
   { path: PATH_EMPLOYEE, component: EmployeeDetailsComponent },
   { path:PATH_ADD_EMPLOYEE, component:AddEmployeesDialogComponent},
   { path:`${PATH_EDIT_EMPLOYEE}/:eid`, component:AddEmployeesDialogComponent},
-  { path: PATH_EMPLOYEE_DETAILS, component:EditEmployeeComponent}
+  { path: PATH_EMPLOYEE_DETAILS, component:EditEmployeeComponent},
+  { path: '**', redirectTo: PATH_HOME }
   
 ];
