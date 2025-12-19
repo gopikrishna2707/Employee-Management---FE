@@ -1,0 +1,118 @@
+<mat-card class="content-margin">
+  <mat-card-header class="margin-large-bottom">
+    <span class="font-large">{{
+      isEditMode ? "Edit employee" : "Add new employee"
+    }}</span>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="addFormControl" (ngSubmit)="saveForm()">
+      <div class="row-forms">
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your name</mat-label>
+            <input
+              matInput
+              placeholder=""
+              required
+              formControlName="nameField"
+            />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your email</mat-label>
+            <input
+              matInput
+              placeholder=""
+              required
+              formControlName="emailForm"
+            />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your skills</mat-label>
+            <input
+              matInput
+              placeholder=""
+              required
+              formControlName="skillsForm"
+            />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your experience</mat-label>
+            <input matInput placeholder="" required formControlName="expForm" />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>is currently working</mat-label>
+            <input
+              matInput
+              placeholder=""
+              formControlName="workForm"
+              required
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row-forms">
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your location</mat-label>
+            <input matInput placeholder="" formControlName="locationForm" />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your reporting</mat-label>
+            <input matInput placeholder="" formControlName="reportForm" />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your designation</mat-label>
+            <input matInput placeholder="" formControlName="designationForm" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row-forms">
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter manager mail</mat-label>
+            <input matInput placeholder="" formControlName="managerForm" />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter your department</mat-label>
+            <input matInput placeholder="" formControlName="deptForm" />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter joined date</mat-label>
+            <input matInput placeholder="" formControlName="joinForm" />
+          </mat-form-field>
+        </div>
+        <div class="example-container">
+          <mat-form-field>
+            <mat-label>Enter personal details</mat-label>
+            <input matInput placeholder="" formControlName="personalForm" />
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <ng-container *ngIf="!isEditMode; else updateForm">
+      <button mat-stroked-button [disabled]="!addFormControl.dirty" (click)="saveForm()">submit</button>
+    </ng-container>
+    <ng-template #updateForm>
+      <button mat-stroked-button [disabled]="!addFormControl.dirty" (click)="updateFormDetails()">update</button>
+    </ng-template>
+    <div class="overlay" *ngIf="isSpin">
+      <div class="spinner"></div>
+    </div>
+  </mat-card-content>
+</mat-card>

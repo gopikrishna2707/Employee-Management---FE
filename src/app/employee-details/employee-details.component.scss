@@ -1,0 +1,22 @@
+@import "../../styles.scss";
+.margin-bottom-20{
+    margin-bottom: 20px;
+}
+.margin-top-20{
+    margin-top: 20px;
+}
+.form-feild{
+    width:30%
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row; /* horizontal layout */
+  justify-content: space-between; /* space between input and button */
+  align-items: center; /* vertically center */
+  gap: 16px; /* adds gap between input and button */
+}
+
+.form-feild {
+  flex: 1; /* input takes full width */
+}

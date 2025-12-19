@@ -1,0 +1,7 @@
+<mat-card class="content-margin">
+    <div class="button-container">
+    <button mat-stroked-button color="primary" class="big-button" *ngFor="let e of homeButtonList" (click)="redirectTo(e.path)">
+        {{e.name}}
+    </button>
+    </div>
+</mat-card>

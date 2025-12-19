@@ -1,0 +1,13 @@
+
+mat-toolbar {
+  display: flex;
+}
+
+.spacer {
+  flex: 1 1 auto; /* Takes remaining space and pushes next items to the end */
+}
+
+.btns{
+  display: flex;
+  margin-right: 20px;
+}

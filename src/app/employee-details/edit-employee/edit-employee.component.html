@@ -1,0 +1,30 @@
+
+<mat-card class="content-margin">
+  <mat-card-content>
+    <!-- Search Field -->
+    <div class="margin-small-top">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Search employee</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input type="text" matInput />
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+
+  <!-- Dynamic Employee Details -->
+  <div class="margin-medium-top">
+    <div *ngFor="let emp of employeeDetails" class="employee-card">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ emp.name || 'Employee Details' }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngFor="let item of emp | keyvalue">
+            <p><strong>{{ item.key }}:</strong> {{ item.value }}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</mat-card>
+
