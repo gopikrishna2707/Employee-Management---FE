@@ -195,6 +195,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
       error: (err) => {
         console.log('erros');
         this.isSpin = false;
+        this.snackBar.open('Error while fetching the data', 'close', {duration:3000})
       },
     });
   }
