@@ -7,7 +7,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   providedIn: 'root',
 })
 export class EmsServiceService {
-  private static readonly BASE_URl = 'http://localhost:8099/api';
+  private static readonly BASE_URl = 'https://employee-management-be-a2t9.onrender.com';
 
   constructor(
     private readonly http: HttpClient,
