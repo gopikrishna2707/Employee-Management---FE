@@ -2,12 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { delay, map, Observable } from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmsServiceService {
-  private static readonly BASE_URl = 'https://employee-management-be-a2t9.onrender.com';
+  // private static readonly BASE_URl = 'https://employee-management-be-a2t9.onrender.com';
+  private static readonly BASE_URL = environment.apiBaseUrl;
 
   constructor(
     private readonly http: HttpClient,
@@ -38,7 +40,7 @@ export class EmsServiceService {
 
   getEmployees(): Observable<any> {
     return this.http
-      .get<any>(`${EmsServiceService.BASE_URl}/employees/basic`)
+      .get<any>(`${EmsServiceService.BASE_URL}/employees/basic`)
       .pipe(
         delay(2000),
         map((res: any) => {
@@ -48,7 +50,7 @@ export class EmsServiceService {
   }
 
   getEmployeesDetails(): Observable<any> {
-    return this.http.get<any>(`${EmsServiceService.BASE_URl}/employees`).pipe(
+    return this.http.get<any>(`${EmsServiceService.BASE_URL}/employees`).pipe(
       delay(2000),
       map((res: any) => {
         return res;
@@ -58,7 +60,7 @@ export class EmsServiceService {
 
   addEmployee(config: any): Observable<any> {
     return this.http
-      .post<any>(`${EmsServiceService.BASE_URl}/employees`, config)
+      .post<any>(`${EmsServiceService.BASE_URL}/employees`, config)
       .pipe(
         delay(2000),
         map((res: any) => {
@@ -69,7 +71,7 @@ export class EmsServiceService {
 
   employeeById(empId: string): Observable<any> {
     return this.http
-      .get<any>(`${EmsServiceService.BASE_URl}/employees/${empId}`)
+      .get<any>(`${EmsServiceService.BASE_URL}/employees/${empId}`)
       .pipe(
         delay(2000),
         map((res) => {
@@ -80,7 +82,7 @@ export class EmsServiceService {
 
   updateEmployeeById(empId: string, payLoad: any): Observable<any> {
     return this.http
-      .put<any>(`${EmsServiceService.BASE_URl}/employees/${empId}`, payLoad)
+      .put<any>(`${EmsServiceService.BASE_URL}/employees/${empId}`, payLoad)
       .pipe(
         delay(1000),
         map((res) => {
@@ -91,7 +93,7 @@ export class EmsServiceService {
 
   deleteEmployeeById(empId: string): Observable<any> {
     return this.http
-      .delete<any>(`${EmsServiceService.BASE_URl}/employees/${empId}`)
+      .delete<any>(`${EmsServiceService.BASE_URL}/employees/${empId}`)
       .pipe(
         delay(2000),
         map((res) => {
@@ -102,7 +104,7 @@ export class EmsServiceService {
 
   searchEmployee(value:string):Observable<any>{
     return this.http
-      .get<any>(`${EmsServiceService.BASE_URl}/employees/search/basic/${value}`).pipe(
+      .get<any>(`${EmsServiceService.BASE_URL}/employees/search/basic/${value}`).pipe(
         map((res:any) => {
           return res;
         })

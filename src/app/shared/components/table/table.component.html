@@ -1,0 +1,32 @@
+<!-- table.component.html -->
+<mat-card>
+  <mat-card-content>
+    <div>
+      <table mat-table [dataSource]="dataSource" matSort>
+        <!-- Dynamic columns -->
+        <ng-container
+          *ngFor="let column of columnsToDisplay"
+          [matColumnDef]="column"
+        >
+          <th mat-header-cell *matHeaderCellDef [mat-sort-header]="column">
+            {{ column }}
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+            {{ element[column] ?? "-" }}
+          </td>
+        </ng-container>
+        <!-- Header and Row definitions -->
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+        <tr
+          class="margin-small-top"
+          *matNoDataRow
+          [attr.span]="columnsToDisplay.length"
+        >
+          No data available
+        </tr>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>
