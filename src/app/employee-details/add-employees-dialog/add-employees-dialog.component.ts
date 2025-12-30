@@ -67,6 +67,7 @@ export class AddEmployeesDialogComponent implements OnInit {
       joinForm: new FormControl({ value: '', disabled: false }),
       personalForm: new FormControl({ value: '', disabled: false }),
       workForm: new FormControl({ value: '', disabled: false }),
+      salaryForm:new FormControl({value:'', disabled:false})
     });
   }
 
@@ -86,6 +87,7 @@ export class AddEmployeesDialogComponent implements OnInit {
       currentlyWorking: this.addFormControl.value.workForm ?? 'Yes',
       skills: this.addFormControl.value.skillsForm,
       personalDetails: this.addFormControl.value.personalForm,
+      salaryForm: this.addFormControl.value.salaryForm
     };
 
     this.emsService.addEmployee(payload).subscribe({
@@ -124,6 +126,7 @@ export class AddEmployeesDialogComponent implements OnInit {
           joinForm: res.joinedDate,
           personalForm: res.personalDetails,
           workForm: res.currentlyWorking,
+          salaryForm: res.salary
         });
         this.isSpin =false;
       },
