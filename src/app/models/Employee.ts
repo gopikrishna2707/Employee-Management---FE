@@ -5,6 +5,7 @@ export interface Employee {
   department?: string;
   designation?: string;
   location?: string;
+  salary?:number
   reportingManager?: string;
   reportingManagerMail?: string;
   joinedDate?: string;        // e.g., '2023-01-15'

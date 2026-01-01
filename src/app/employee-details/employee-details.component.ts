@@ -1,4 +1,4 @@
-import { AfterViewInit, OnInit, ViewChild, Component } from '@angular/core';
+import { AfterViewInit, OnInit, ViewChild, Component, effect } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortHeader, MatSortModule } from '@angular/material/sort';
@@ -62,7 +62,11 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
     private readonly dialog: MatDialog
-  ) {}
+  ) {
+    effect(() => {
+      this.dataSource.data = this.emsService.employeeDataCache();
+    })
+  }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -88,44 +92,14 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
       }
       return value.toString().toLowerCase();
     };
-
-    // merge(this.paginator.page)
-    //   .pipe(
-    //     startWith({ pageIndex: this.pageIndex, pageSize: this.pageSize }),
-    //     switchMap((event: any) => {
-    //       const page = event.pageIndex ?? this.pageIndex;
-    //       const size = event.pageSize ?? this.pageSize;
-    //       this.isSpin = true;
-    //       return this.emsService.getEmployees(page, size); // or getEmployeesPaged
-    //     }),
-    //     map((res: any) => {
-    //       this.isSpin = false;
-    //       this.totalElements = res.totalElements;
-    //       console.log(this.totalElements);
-    //       this.pageIndex = res.number;
-    //       this.pageSize = res.size;
-    //       return res.content;
-    //     }),
-    //     catchError((err: any) => {
-    //       this.isSpin = false;
-    //       console.error(err);
-    //       return [];
-    //     })
-    //   )
-    //   .subscribe((data) => (this.dataSource.data = data));
   }
 
   ngOnInit() {
     this.setupSearchDebounce();
     this.filteringValues();
-    this.getEmployees();
-    this.printValues();
+    this.emsService.getEmployees();
   }
 
-  printValues() {
-    const startsWithA: string[] = this.data.filter((a) => a.startsWith('a'));
-    console.log(startsWithA);
-  }
   //need to add emp ID
   columnsToDataMapping: ColumnMapping = {
     Id: 'id',
@@ -143,31 +117,6 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     'action',
   ];
 
-  allData: any[] = [];
-
-  // getEmployees(
-  //   page: number,
-  //   size: number,
-  //   sortBy?: string,
-  //   direction?: 'ASC' | 'DESC'
-  // ) {
-  //   this.isSpin = true;
-  //   this.emsService.getEmployees(page, size, sortBy, direction).subscribe({
-  //     next: (res) => {
-  //       this.dataSource.data = res.content;
-  //       this.allData = res.content;
-  //       this.totalElements = res.totalElements;
-  //       this.pageIndex = res.number;
-  //       this.pageSize = res.size;
-  //       this.isSpin = false;
-  //     },
-  //     error: (err) => {
-  //       console.log('erros');
-  //       this.isSpin = false;
-  //     },
-  //   });
-  // }
-
   data: any[] = [
     'apple',
     'banana',
@@ -182,23 +131,6 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     20,
     30,
   ];
-
-  getEmployees() {
-    this.isSpin = true;
-    this.emsService.getEmployees().subscribe({
-      next: (res) => {
-        this.dataSource.data = res;
-        this.allData = res.content;
-        this.dataSource.paginator = this.paginator;
-        this.isSpin = false;
-      },
-      error: (err) => {
-        console.log('erros');
-        this.isSpin = false;
-        this.snackBar.open('Error while fetching the data', 'close', {duration:3000})
-      },
-    });
-  }
 
   clickOnEditDetails(id: string) {
     console.log('edit');
@@ -308,13 +240,12 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
         },
       });
     } else {
-      this.getEmployees();
+      //this.getEmployees();
     }
   }
 
   onPageChange(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.getEmployees();
   }
 }
