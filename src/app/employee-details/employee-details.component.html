@@ -15,7 +15,7 @@
       <button mat-stroked-button (click)="redirectTo()">Add Employee</button>
     </div>
 
-    <!-- <div>
+    <div>
       <table mat-table matSort [dataSource]="dataSource">
         <ng-container
           *ngFor="let column of columnsToDisplay"
@@ -63,24 +63,13 @@
       </table>
       <mat-paginator showFirstLastButtons [pageSizeOptions]="[20, 50, 100]">
       </mat-paginator>
-    </div> -->
+    </div>
 
-    <app-table [data] = dataSource.data>
-    </app-table>
+    <!-- <app-table [data] = dataSource.data>
+    </app-table> -->
 
     <div class="overlay" *ngIf="isSpin">
       <div class="spinner"></div>
     </div>
   </mat-card-content>
 </mat-card>
-<!-- 
-<mat-paginator
-        #paginator
-        [length]="totalElements"
-        [pageIndex]="pageIndex"
-        showFirstLastButtons
-        [pageSize]="pageSize"
-        [pageSizeOptions]="[20, 50, 100]"
-        (page)="onPageChange($event)"
-      >
-      </mat-paginator> -->
