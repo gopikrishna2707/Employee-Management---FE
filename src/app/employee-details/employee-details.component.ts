@@ -1,4 +1,10 @@
-import { AfterViewInit, OnInit, ViewChild, Component, effect } from '@angular/core';
+import {
+  AfterViewInit,
+  OnInit,
+  ViewChild,
+  Component,
+  effect,
+} from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortHeader, MatSortModule } from '@angular/material/sort';
@@ -34,6 +40,9 @@ import {
   switchMap,
 } from 'rxjs';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { TableComponent } from "../shared/components/table/table.component";
+import { BASIC_MOCK } from '../mock-data';
+import { Employee } from '../models/Employee';
 
 @Component({
   selector: 'app-employee-details',
@@ -52,7 +61,8 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
     MatInputModule,
     MatSortHeader,
     MatSortModule,
-  ],
+    TableComponent
+],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
 })
@@ -65,7 +75,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   ) {
     effect(() => {
       this.dataSource.data = this.emsService.employeeDataCache();
-    })
+    });
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -81,6 +91,8 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   pageIndex: number = 0;
   pageSize: number = 20;
   totalElements: any = 0;
+
+  mockData = BASIC_MOCK
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -115,21 +127,6 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     ...this.columnsToDisplay,
     'editDetails',
     'action',
-  ];
-
-  data: any[] = [
-    'apple',
-    'banana',
-    'avocado',
-    'mango',
-    'grape',
-    ['orange', 'kiwi'],
-    'pineapple',
-    'pear',
-    'apricot',
-    10,
-    20,
-    30,
   ];
 
   clickOnEditDetails(id: string) {
@@ -211,7 +208,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     this.searchSubject
       .pipe(debounceTime(200), distinctUntilChanged())
       .subscribe((value) => {
-        this.searchInAll(value);
+        this.searchDetails(value);
       });
   }
 

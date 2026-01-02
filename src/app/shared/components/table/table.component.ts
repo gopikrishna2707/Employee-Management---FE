@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   effect,
+  EventEmitter,
   input,
   OnInit,
+  Output,
   ViewChild,
   viewChild,
 } from '@angular/core';
@@ -20,6 +22,7 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ColumnMapping } from '../../../models/columnToDataMapping';
+import { A11yModule } from "@angular/cdk/a11y";
 
 @Component({
   selector: 'app-table',
@@ -35,14 +38,19 @@ import { ColumnMapping } from '../../../models/columnToDataMapping';
     ReactiveFormsModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
-  ],
+    MatButtonModule,
+    A11yModule
+],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
 export class TableComponent implements OnInit, AfterViewInit {
 
   data = input.required<Employee[]>();
+
+  @Output() editClick = new EventEmitter<boolean>();
+
+  @Output() deleteClick = new EventEmitter<boolean>();
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -59,6 +67,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   };
 
   columnsToDisplay = Object.keys(this.columnsDataMapping);
+
+  columnsToDisplayAction = [...this.columnsToDisplay, 'edit', 'delete'];
 
   excludeColumns:string[] = [];
 
@@ -78,7 +88,6 @@ export class TableComponent implements OnInit, AfterViewInit {
   getData() {
     const rows = this.data() ?? [];
     this.dataSource.data = rows;
-    this.columnsToDisplay = rows.length ? Object.keys(rows[0]) : [];
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
