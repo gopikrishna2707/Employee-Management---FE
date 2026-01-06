@@ -44,6 +44,8 @@ export class EmsServiceService {
 
   employeeDataCache = signal<any[]>([]);
 
+  isLoading = signal(false);
+
   getEmployees():void{
 
     if(this.employeeDataCache().length){
@@ -58,6 +60,9 @@ export class EmsServiceService {
         },
         error:(err) => {
           this.snackBar.open('error at data', 'close',{duration:3000});
+        },
+        complete: () => {
+          this.isLoading.set(false);
         }
       })
   }

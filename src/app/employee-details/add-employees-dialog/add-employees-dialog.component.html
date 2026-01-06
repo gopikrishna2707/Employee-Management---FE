@@ -2,128 +2,94 @@
   <mat-card-header class="margin-large-bottom">
     <span class="font-large">{{
       isEditMode ? "Edit employee" : "Add new employee"
-    }}</span>
+      }}</span>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="addFormControl" (ngSubmit)="saveForm()">
-      <div class="row-forms">
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter your name</mat-label>
-            <input
-              matInput
-              placeholder=""
-              required
-              formControlName="nameField"
-            />
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter your email</mat-label>
-            <input
-              matInput
-              placeholder=""
-              required
-              formControlName="emailForm"
-            />
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter your skills</mat-label>
-            <input
-              matInput
-              placeholder=""
-              required
-              formControlName="skillsForm"
-            />
-          </mat-form-field>
-        </div>
+      <!-- Row 1 -->
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="nameField" required />
+      </mat-form-field>
 
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter salary</mat-label>
-            <input
-              matInput
-              placeholder=""
-              required
-              formControlName="salaryForm"
-            />
-          </mat-form-field>
-        </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="emailForm" required />
+      </mat-form-field>
 
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter your experience</mat-label>
-            <input matInput placeholder="" required formControlName="expForm" />
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>is currently working</mat-label>
-            <input
-              matInput
-              placeholder=""
-              formControlName="workForm"
-              required
-            />
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row-forms">
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter your location</mat-label>
-            <input matInput placeholder="" formControlName="locationForm" />
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter your reporting</mat-label>
-            <input matInput placeholder="" formControlName="reportForm" />
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter your designation</mat-label>
-            <input matInput placeholder="" formControlName="designationForm" />
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row-forms">
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter manager mail</mat-label>
-            <input matInput placeholder="" formControlName="managerForm" />
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter your department</mat-label>
-            <input matInput placeholder="" formControlName="deptForm" />
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter joined date</mat-label>
-            <input matInput placeholder="" formControlName="joinForm" />
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field>
-            <mat-label>Enter personal details</mat-label>
-            <input matInput placeholder="" formControlName="personalForm" />
-          </mat-form-field>
-        </div>
-      </div>
+      <!-- Row 2 -->
+      <mat-form-field appearance="outline">
+        <mat-label>Skills</mat-label>
+        <input matInput formControlName="skillsForm" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Salary</mat-label>
+        <input matInput formControlName="salaryForm" required />
+      </mat-form-field>
+
+      <!-- Row 3 -->
+      <mat-form-field appearance="outline">
+        <mat-label>Experience</mat-label>
+        <input matInput formControlName="expForm" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Currently Working</mat-label>
+        <input matInput formControlName="workForm" required />
+      </mat-form-field>
+
+      <!-- Row 4 -->
+      <mat-form-field appearance="outline">
+        <mat-label>Location</mat-label>
+        <input matInput formControlName="locationForm" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Reporting</mat-label>
+        <input matInput formControlName="reportForm" required />
+      </mat-form-field>
+
+      <!-- Row 5 -->
+      <mat-form-field appearance="outline">
+        <mat-label>Designation</mat-label>
+        <input matInput formControlName="designationForm" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Manager Email</mat-label>
+        <input matInput formControlName="managerForm" required />
+      </mat-form-field>
+
+      <!-- Row 6 -->
+      <mat-form-field appearance="outline">
+        <mat-label>Department</mat-label>
+        <input matInput formControlName="deptForm" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Joined Date</mat-label>
+        <input matInput formControlName="joinForm" />
+      </mat-form-field>
+
+      <!-- Row 7 -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Personal Details</mat-label>
+        <input matInput formControlName="personalForm" />
+      </mat-form-field>
     </form>
-    <ng-container *ngIf="!isEditMode; else updateForm">
-      <button mat-stroked-button [disabled]="!addFormControl.dirty" (click)="saveForm()">submit</button>
-    </ng-container>
-    <ng-template #updateForm>
-      <button mat-stroked-button [disabled]="!addFormControl.dirty" (click)="updateFormDetails()">update</button>
-    </ng-template>
+    <div class="button-container">
+      <ng-container *ngIf="!isEditMode; else updateForm">
+        <button class="btn-cls" mat-stroked-button [disabled]="!addFormControl.dirty" (click)="saveForm()">
+          Submit
+        </button>
+      </ng-container>
+      <ng-template #updateForm>
+        <button class="btn-cls" mat-stroked-button [disabled]="!addFormControl.dirty" (click)="updateFormDetails()">
+          Update
+        </button>
+      </ng-template>
+    </div>
     <div class="overlay" *ngIf="isSpin">
       <div class="spinner"></div>
     </div>
