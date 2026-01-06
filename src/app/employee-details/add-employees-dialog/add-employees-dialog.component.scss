@@ -1,9 +1,47 @@
-.row-forms{
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-}
-.skills-form{
-    width: 50%;
+/* Form container */
+form {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 12px;
+    font-family: 'Roboto', sans-serif;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 fields per row */
+    gap: 1.5rem 2rem;
+    /* row-gap, column-gap */
 }
 
+mat-form-field {
+    width: 100%;
+}
+.button-container {
+  display: flex;          /* Use flex layout */
+  justify-content: center; /* Align content to the right */
+  margin-top: 1rem;       /* Space from form fields */
+  gap: 0.5rem;            /* Space between buttons if both visible */
+}
+
+.btn-cls {
+  color: #3f51b5;
+  border-color: #3f51b5;
+  padding: 0.6rem 1.8rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-cls:hover:not(:disabled) {
+  background-color: #3f51b5;
+  color: #fff;
+  border-color: #3f51b5;
+}
+
+.btn-cls:disabled {
+  color: #999;
+  border-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

@@ -61,7 +61,6 @@ import { Employee } from '../models/Employee';
     MatInputModule,
     MatSortHeader,
     MatSortModule,
-    TableComponent
 ],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
@@ -78,9 +77,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  @ViewChild(MatSort) sort!: MatSort;
+  mockData = BASIC_MOCK
 
   dataSource = new MatTableDataSource<any>([]);
 
@@ -88,23 +85,8 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
 
   private readonly searchSubject = new Subject<string>();
 
-  pageIndex: number = 0;
-  pageSize: number = 20;
-  totalElements: any = 0;
-
-  mockData = BASIC_MOCK
-
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sortingDataAccessor = (item, property) => {
-      const value = item[property];
-      if (value === null || value === '' || value === undefined) {
-        return this.sort.direction === 'asc' ? '\uffff' : '\u0000';
-      }
-      return value.toString().toLowerCase();
-    };
-  }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit() {
     this.setupSearchDebounce();
@@ -112,6 +94,19 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     this.emsService.getEmployees();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      const value = item[property];
+      return value ? value.toString().toLowerCase() : '';
+    };
+  }
+
+  get isLoading() {
+    return this.emsService.isLoading();
+  }
+  
   //need to add emp ID
   columnsToDataMapping: ColumnMapping = {
     Id: 'id',
@@ -239,10 +234,5 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     } else {
       //this.getEmployees();
     }
-  }
-
-  onPageChange(event: PageEvent) {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
   }
 }
