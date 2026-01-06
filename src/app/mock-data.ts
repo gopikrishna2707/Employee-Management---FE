@@ -376,3 +376,38 @@ export const BASIC_MOCK = [
     salary: 490000,
   }
 ];
+
+
+export const BASIC_ATTENDANCE = [
+  {
+    "id": 1,
+    "clock_in": "09:00:00",
+    "clock_out": "17:30:00",
+    "today_in": "2026-01-05"
+  },
+  {
+    "id": 2,
+    "clock_in": "08:45:00",
+    "clock_out": "16:45:00",
+    "today_in": "2026-01-05"
+  },
+  {
+    "id": 3,
+    "clock_in": "10:00:00",
+    "clock_out": "18:00:00",
+    "today_in": "2026-01-05"
+  },
+  {
+    "id": 4,
+    "clock_in": "09:15:00",
+    "clock_out": "17:00:00",
+    "today_in": "2026-01-05"
+  },
+  {
+    "id": 5,
+    "clock_in": "08:30:00",
+    "clock_out": "17:15:00",
+    "today_in": "2026-01-05"
+  }
+]
+
