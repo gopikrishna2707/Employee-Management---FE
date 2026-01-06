@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-card-content>
+    <app-table
+      [data]="dataSource.data"
+      [columnsToDisplay]="columnsToDisplay"
+      [mapping]="columnsDataMapping"
+      (editClick)="handleEditEvent($event)"
+      (deleteClick)="handleDeleteEvent($event)"
+    >
+    </app-table>
+  </mat-card-content>
+</mat-card>
