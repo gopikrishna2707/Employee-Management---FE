@@ -14,6 +14,8 @@ export class EmsServiceService {
 
   private static readonly BASE_URL = environment.apiBaseUrl;
 
+  searchLength:number = 3;
+
   constructor(
     private readonly http: HttpClient,
     private readonly snackBar: MatSnackBar

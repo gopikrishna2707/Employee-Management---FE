@@ -222,7 +222,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   }
 
   searchInAll(value: string) {
-    if (value.length >= 3) {
+    if (value.length >= this.emsService.searchLength) {
       this.emsService.searchEmployee(value).subscribe({
         next: (res) => {
           this.dataSource.data = res;
