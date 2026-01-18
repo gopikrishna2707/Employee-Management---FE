@@ -212,7 +212,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   }
 
   filteringValues() {
-    const fieldsToFilter = ['id', 'name', 'email', 'currentlyWorking']; // Add more fields easily here
+    const fieldsToFilter = ['id', 'name', 'email']; // Add more fields easily here
     this.dataSource.filterPredicate = (data, filter) => {
       const lowerFilter = filter.trim().toLowerCase();
       return fieldsToFilter.some((field) =>
