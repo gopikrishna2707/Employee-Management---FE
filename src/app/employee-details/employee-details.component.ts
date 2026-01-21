@@ -70,14 +70,14 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     private readonly emsService: EmsServiceService,
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
   ) {
     effect(() => {
       this.dataSource.data = this.emsService.employeeDataCache();
     });
   }
 
-  mockData = BASIC_MOCK
+  mockData = BASIC_MOCK;
 
   dataSource = new MatTableDataSource<any>([]);
 
@@ -192,7 +192,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onSearch(event: KeyboardEvent) {
+  onSearch(event: Event) {
     const input = event.target as HTMLInputElement;
     const value = input.value;
     this.searchSubject.next(value);
@@ -234,5 +234,10 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     } else {
       //this.getEmployees();
     }
+  }
+
+  trackById(index:number, column:any){
+    console.log('Tracking ID:', column.id);
+    return column.id;
   }
 }

@@ -8,7 +8,7 @@
           type="text"
           matInput
           id="search-project-input"
-          (keyup)="onSearch($event)"
+          (input)="onSearch($event)"
         />
       </mat-form-field>
 
@@ -16,9 +16,9 @@
     </div>
 
     <div>
-      <table mat-table matSort [dataSource]= "dataSource">
+      <table mat-table matSort [dataSource]= "dataSource" [trackBy]="trackById">
         <ng-container
-          *ngFor="let column of columnsToDisplay"
+          *ngFor="let column of columnsToDisplay;let i = index;"
           [matColumnDef]="column"
         >
           <th
@@ -51,7 +51,7 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithAction"></tr>
         <tr
           mat-row
-          *matRowDef="let row; columns: columnsToDisplayWithAction"
+          *matRowDef="let row; columns: columnsToDisplayWithAction;"
         ></tr>
         <tr
           class="margin-small-top"

@@ -20,8 +20,6 @@ import { PATH_ADD_EMPLOYEE } from '../../../app.routes';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ColumnMapping } from '../../../models/columnToDataMapping';
-import { A11yModule } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-table',
@@ -88,11 +86,11 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   onDeleteClick(element:any) {
-     this.editClick.emit(element);
+     this.deleteClick.emit(element);
   }
 
   onEditClick(element:any) {
-    this.deleteClick.emit(element);
+    this.editClick.emit(element);
   }
 
   onSearch($event: KeyboardEvent) {}
