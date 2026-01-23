@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import { PATH_ADD_EMPLOYEE, PATH_EMPLOYEE, PATH_EMPLOYEE_ATTENDANCE, PATH_HOME } from '../app.routes';
+import { PATH_ADD_EMPLOYEE, PATH_EMPLOYEE, PATH_EMPLOYEE_ATTENDANCE, PATH_HOME, PATH_PAYROLL } from '../app.routes';
 import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
@@ -31,7 +31,7 @@ export class HeaderComponent {
     { label: 'Dashboard', path: PATH_HOME },
     { label: 'Employees', path: PATH_EMPLOYEE },
     { label: 'Attendance', path: PATH_EMPLOYEE_ATTENDANCE },
-    { label: 'Payroll', path: '' },
+    { label: 'Payroll', path: PATH_PAYROLL },
     { label: 'Masters', path: '' },
     { label: 'Settings', path:''  },
   ];

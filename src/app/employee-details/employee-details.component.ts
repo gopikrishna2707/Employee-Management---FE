@@ -23,26 +23,17 @@ import { MatInputModule } from '@angular/material/input';
 import { ColumnMapping } from '../models/columnToDataMapping';
 import { EmsServiceService } from '../services/ems-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PATH_ADD_EMPLOYEE, PATH_EDIT_EMPLOYEE } from '../app.routes';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import {
-  catchError,
-  debounce,
   debounceTime,
   distinctUntilChanged,
-  filter,
-  map,
-  merge,
-  startWith,
   Subject,
-  switchMap,
 } from 'rxjs';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { TableComponent } from "../shared/components/table/table.component";
 import { BASIC_MOCK } from '../mock-data';
-import { Employee } from '../models/Employee';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-employee-details',
@@ -61,6 +52,8 @@ import { Employee } from '../models/Employee';
     MatInputModule,
     MatSortHeader,
     MatSortModule,
+    NgxSkeletonLoaderModule,
+    CommonModule
 ],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
@@ -71,11 +64,8 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-  ) {
-    effect(() => {
-      this.dataSource.data = this.emsService.employeeDataCache();
-    });
-  }
+    private acivatedRoute : ActivatedRoute
+  ) {}
 
   mockData = BASIC_MOCK;
 
@@ -89,9 +79,9 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit() {
+    this.getEmployees();
     this.setupSearchDebounce();
     this.filteringValues();
-    this.emsService.getEmployees();
   }
 
   ngAfterViewInit(): void {
@@ -99,13 +89,26 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item, property) => {
       const value = item[property];
-      return value ? value.toString().toLowerCase() : '';
+      if (value) {
+        return value.toString().toLowerCase();
+      }
+      return this.dataSource.sort?.direction === 'asc' ? '\uffff' : '\u0000';
     };
   }
 
-  get isLoading() {
-    return this.emsService.isLoading();
+  showData:boolean = false;
+
+  getEmployees(){
+    this.emsService.getEmployees().subscribe({
+      next:(res) => {
+        this.dataSource.data = res;
+      },
+      error:(err) => {
+        this.snackBar.open('No data found', 'close', {duration :3000, panelClass:['snackbar-error']})
+      }
+    })
   }
+
   
   //need to add emp ID
   columnsToDataMapping: ColumnMapping = {
@@ -167,7 +170,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
           this.emsService.deleteEmployeeById(empId).subscribe({
             next: () => {
               this.snackBar.open('Employee deleted from server', 'Close', {
-                duration: 3000,
+                duration: 3000, panelClass:['snackbar-error']
               });
             },
             error: (err) => {
@@ -186,7 +189,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
         });
       } else {
         this.snackBar.open('Employee is currently working', 'Close', {
-          duration: 3000,
+          duration: 3000, panelClass:['snackbar-error']
         });
       }
     });
@@ -212,7 +215,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   }
 
   filteringValues() {
-    const fieldsToFilter = ['id', 'name', 'email']; // Add more fields easily here
+    const fieldsToFilter = ['id', 'name', 'email', 'currentlyWorking']; // Add more fields easily here
     this.dataSource.filterPredicate = (data, filter) => {
       const lowerFilter = filter.trim().toLowerCase();
       return fieldsToFilter.some((field) =>

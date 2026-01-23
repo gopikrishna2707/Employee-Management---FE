@@ -16,7 +16,7 @@
     </div>
 
     <div>
-      <table mat-table matSort [dataSource]= "dataSource" [trackBy]="trackById">
+      <table mat-table matSort [dataSource]= "dataSource" [trackBy]="trackById" class="mat-elevation-z1">
         <ng-container
           *ngFor="let column of columnsToDisplay;let i = index;"
           [matColumnDef]="column"
@@ -29,7 +29,7 @@
             {{ column }}
           </th>
           <td mat-cell *matCellDef="let element">
-            {{ element[columnsToDataMapping[column]] || "-" }}
+            {{ element[columnsToDataMapping[column]]}}
           </td>
         </ng-container>
         <ng-container matColumnDef="editDetails">
@@ -64,8 +64,10 @@
       <mat-paginator #paginator showFirstLastButtons pageSize="10" [pageSizeOptions]="[10, 50, 100]">
       </mat-paginator>
     </div>
-    <div class="overlay" *ngIf= "isLoading">
-      <div class="spinner"></div>
-    </div>
   </mat-card-content>
 </mat-card>
+<ng-template #loader>
+<div class="item">
+  <ngx-skeleton-loader count="6" appearance="line" />
+</div>
+</ng-template>

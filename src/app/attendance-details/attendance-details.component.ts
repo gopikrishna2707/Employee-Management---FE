@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ColumnMapping } from '../models/columnToDataMapping';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableComponent } from '../shared/components/table/table.component';
@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { debounce, debounceTime, filter, Subject } from 'rxjs';
+import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
+import { EmsServiceService } from '../services/ems-service.service';
 
 @Component({
   selector: 'app-attendance-details',
@@ -31,10 +33,12 @@ import { debounce, debounceTime, filter, Subject } from 'rxjs';
   styleUrl: './attendance-details.component.scss',
 })
 export class AttendanceDetailsComponent {
-  constructor(private readonly snackBar: MatSnackBar) {
+  constructor(private readonly snackBar: MatSnackBar,
+    private readonly emsService:EmsServiceService
+  ) {
     this.ondebounce();
   }
-
+  
   dataSource = new MatTableDataSource<any>(BASIC_ATTENDANCE);
 
   value: string = 'abc';
@@ -53,7 +57,9 @@ export class AttendanceDetailsComponent {
   handleEditEvent(editEvent: any) {
     console.log(editEvent.id);
     this.snackBar.open('edit clicked', 'close', { duration: 3000 });
+    this.emsService.viewing();
   }
+  
   handleDeleteEvent(deleteEvent: any) {
     console.log(deleteEvent);
     this.snackBar.open('delete clicked', 'close', { duration: 3000 });

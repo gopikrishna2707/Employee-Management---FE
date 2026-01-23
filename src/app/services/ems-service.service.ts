@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, ViewChild } from '@angular/core';
 import { delay, map, Observable, of, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment.prod';
+import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
 
 
 @Injectable({
@@ -14,57 +15,24 @@ export class EmsServiceService {
 
   searchLength:number = 3;
 
+  @ViewChild(EmployeeDetailsComponent) employeeComponent!:EmployeeDetailsComponent;
+
   constructor(
     private readonly http: HttpClient,
     private readonly snackBar: MatSnackBar
   ) { }
 
-  // getEmployees(
-  //   page = 0,
-  //   size = 20,
-  //   sortBy?: string,
-  //   direction: 'ASC' | 'DESC' = 'ASC'
-  // ): Observable<any> {
-  //   let params = new HttpParams().set('page', page).set('size', size);
-
-  //   if (sortBy) {
-  //     params = params.set('sortBy', sortBy).set('direction', direction);
-  //   }
-
-  //   return this.http
-  //     .get<any>(`${EmsServiceService.BASE_URl}/employees/basic`, { params })
-  //     .pipe(
-  //       delay(2000),
-  //       map((res: any) => {
-  //         return res;
-  //       })
-  //     );
-  // }
-
-
   employeeDataCache = signal<any[]>([]);
 
   isLoading = signal(false);
 
-  getEmployees():void{
 
-    if(this.employeeDataCache().length){
-      return 
-    }
-
-    this.http.
-     get<any>(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
-      delay(2000)).subscribe({
-        next:(res) => {
-          this.employeeDataCache.set(res);
-        },
-        error:(err) => {
-          this.snackBar.open('error at data', 'close',{duration:3000});
-        },
-        complete: () => {
-          this.isLoading.set(false);
-        }
+  getEmployees(): Observable<any> {
+    return this.http.get<any>(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
+      map((res: any) => {
+        return res;
       })
+    )
   }
 
   getEmployeesDetails(): Observable<any> {
@@ -130,5 +98,9 @@ export class EmsServiceService {
           return res;
         })
       )
+  }
+
+  viewing(){
+    console.log("view child");
   }
 }

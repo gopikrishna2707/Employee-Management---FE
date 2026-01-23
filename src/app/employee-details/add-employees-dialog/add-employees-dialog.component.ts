@@ -148,8 +148,10 @@ export class AddEmployeesDialogComponent implements OnInit {
         this.isEditMode = false;
       }
     });
+
     this.route.paramMap.subscribe((params) => {
       this.employeeEid = params.get('eid')!;
+      console.log(this.employeeEid);
     });
 
     if (this.isEditMode && this.employeeEid) {
