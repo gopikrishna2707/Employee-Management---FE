@@ -33,7 +33,6 @@ import {
   Subject,
 } from 'rxjs';
 import { BASIC_MOCK } from '../mock-data';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-employee-details',
@@ -52,7 +51,6 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatInputModule,
     MatSortHeader,
     MatSortModule,
-    NgxSkeletonLoaderModule,
     CommonModule
 ],
   templateUrl: './employee-details.component.html',
