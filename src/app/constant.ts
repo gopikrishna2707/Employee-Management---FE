@@ -1,3 +1,5 @@
+import { AbstractControl, ValidationErrors } from "@angular/forms";
+
  export const fORMTYPES:{[key :string] : {
     label?:string,
     toolTip?:string,
@@ -28,4 +30,17 @@
     toolTip : 'state',
     type :'input'
    }
+}
+
+export function noSpaceError(
+  control: AbstractControl
+): ValidationErrors | null {
+
+  const value = control.value;
+
+  if (typeof value === 'string' && value.includes(' ')) {
+    return { noSpaceError: true };
+  }
+
+  return null;
 }

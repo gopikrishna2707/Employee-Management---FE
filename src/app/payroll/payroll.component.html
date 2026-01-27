@@ -1,14 +1,20 @@
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
   <div *ngFor="let field of dataKeys">
     <ng-container>
+      <p class="field-key">{{ field }}:</p>
       <!-- INPUT -->
-      <mat-form-field *ngIf="getType(field) === 'input' && field === 'name'" appearance="fill">
-        <mat-label>{{field}}</mat-label>
-        <input 
-          matInput
-          type = 'text'
-          [formControlName]="field">
-      </mat-form-field>
+      <div>
+        <mat-form-field *ngIf="getType(field) === 'input' && field === 'name'" appearance="fill">
+          <mat-label>{{field}}</mat-label>
+          <input matInput type='text' [formControlName]="field">
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field *ngIf="getType(field) === 'input' && field === 'password'">
+          <input matInput type="text" [formControlName]="field"/>
+        </mat-form-field>
+      </div>
 
       <!-- DROPDOWN -->
       <mat-form-field *ngIf="getType(field) === 'dropdown' && field==='state'" appearance="fill">

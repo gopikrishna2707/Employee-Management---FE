@@ -51,7 +51,6 @@ import { BASIC_MOCK } from '../mock-data';
     MatInputModule,
     MatSortHeader,
     MatSortModule,
-    CommonModule
 ],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
