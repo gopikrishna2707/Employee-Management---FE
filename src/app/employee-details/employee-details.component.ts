@@ -75,10 +75,15 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  id:string | null = '';
+
   ngOnInit() {
     this.getEmployees();
     this.setupSearchDebounce();
     this.filteringValues();
+    this.acivatedRoute.paramMap.subscribe((params) => {
+      this.id = params.get('eid');
+    })
   }
 
   ngAfterViewInit(): void {

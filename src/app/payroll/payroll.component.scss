@@ -1,0 +1,32 @@
+.dropZone{
+    display: flex;
+    border: 1px;
+    color: black;
+}
+.dropzone-container {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  background-color: #fafafa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Highlight style when dragging a file over the box */
+.dropzone-container.dragover {
+  border-color: #3f51b5; /* Material primary color */
+  background-color: #e8eaf6;
+  transform: scale(1.02);
+}
+
+.upload-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  color: #757575;
+}

@@ -1,0 +1,25 @@
+<p>masters works!</p>
+
+<div
+  (click)="fileUpload.click()"
+  (keydown)="fileUpload.click()"
+  (drop)="onDrop($event)"
+  (dragover)="onDragOver($event)"
+>
+  <button mat-stroked-button>
+    <mat-icon matPrefix>cloud-upload</mat-icon>
+    upload
+  </button>
+  <input
+    type="file"
+    #fileUpload
+    style="display: none"
+    [multiple]="true"
+    (change)="fileClicked($event)"
+  />
+</div>
+
+<div>
+  <div>Files Uplaoded</div>
+  <div *ngFor="let file of filesUpload">{{ file.name }}</div>
+</div>

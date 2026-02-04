@@ -16,6 +16,7 @@ import { MOCK_FORMDATA, Mock_table_data } from '../mock-data';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatCard } from '@angular/material/card';
 import { fORMTYPES, noSpaceError } from '../constant';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-payroll',
@@ -31,12 +32,13 @@ import { fORMTYPES, noSpaceError } from '../constant';
     MatSelect,
     MatCard,
     MatOption,
+    MatIcon,
   ],
   templateUrl: './payroll.component.html',
   styleUrl: './payroll.component.scss',
 })
 export class PayrollComponent implements OnInit {
-  constructor(private readonly formBuilder: FormBuilder) { }
+  constructor(private readonly formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.buildForm();
@@ -65,7 +67,10 @@ export class PayrollComponent implements OnInit {
     });
 
     if (this.data.hasOwnProperty('newValue')) {
-      addFields['newvalue'] = this.formBuilder.control('', [Validators.required, noSpaceError])
+      addFields['newvalue'] = this.formBuilder.control('', [
+        Validators.required,
+        noSpaceError,
+      ]);
     }
 
     this.userForm = this.formBuilder.group(addFields);

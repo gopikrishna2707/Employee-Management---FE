@@ -15,7 +15,6 @@
           <input matInput type="text" [formControlName]="field"/>
         </mat-form-field>
       </div>
-
       <!-- DROPDOWN -->
       <mat-form-field *ngIf="getType(field) === 'dropdown' && field==='state'" appearance="fill">
         <mat-label>{{field}}</mat-label>
@@ -27,3 +26,10 @@
   </div>
   <button mat-raised-button>submit</button>
 </form>
+
+<div>
+  <button mat-raised-button>
+    <mat-icon matPrefix>cloud_upload</mat-icon>
+    upload
+  </button>
+</div>

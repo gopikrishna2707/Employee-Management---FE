@@ -14,6 +14,7 @@ export const PATH_EMPLOYEE_DETAILS:string = 'api/employee/details';
 export const PATH_EMPLOYEE_ATTENDANCE:string = 'api/employee/attendance';
 export const PATH_HOME:string = '';
 export const PATH_PAYROLL:string = 'api/employee/payroll'
+export const PATH_MASTERS:string = 'api/employee/masters'
 
 export const routes: Routes = [
 
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path:`${PATH_EDIT_EMPLOYEE}/:eid`, component:AddEmployeesDialogComponent},
   { path: PATH_EMPLOYEE_DETAILS, component:EditEmployeeComponent},
   { path : PATH_EMPLOYEE_ATTENDANCE, component: AttendanceDetailsComponent},
-  { path : PATH_PAYROLL, component: PayrollComponent},
+  {path : PATH_PAYROLL, loadComponent: () => import('./payroll/payroll.component').then(m => m.PayrollComponent)},
+  {path : PATH_MASTERS, loadComponent: () => import('./masters/masters.component').then(m => m.MastersComponent)},
   { path: '', redirectTo: PATH_HOME , pathMatch:'full'}
 ];
