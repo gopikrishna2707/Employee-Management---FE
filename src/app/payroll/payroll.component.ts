@@ -14,9 +14,11 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { NgIf, NgForOf } from '@angular/common';
 import { MOCK_FORMDATA, Mock_table_data } from '../mock-data';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { MatCard } from '@angular/material/card';
+import { MatCard, MatCardContent } from '@angular/material/card';
 import { fORMTYPES, noSpaceError } from '../constant';
 import { MatIcon } from '@angular/material/icon';
+import { HttpClient } from '@angular/common/http';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-payroll',
@@ -33,16 +35,34 @@ import { MatIcon } from '@angular/material/icon';
     MatCard,
     MatOption,
     MatIcon,
+    MatCardContent,
+    MatTableModule
   ],
   templateUrl: './payroll.component.html',
   styleUrl: './payroll.component.scss',
 })
 export class PayrollComponent implements OnInit {
-  constructor(private readonly formBuilder: FormBuilder) {}
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly http: HttpClient
+  ) { }
 
   ngOnInit() {
     this.buildForm();
+    this.loadData();
   }
+  columsToDataMapping: any = {
+    id: 'id',
+    Name: 'username',
+    'E-mail': 'email',
+    WebSite: 'website'
+  }
+
+  dataSource = new MatTableDataSource<any>([]);
+
+  columnsToDisplay = Object.keys(this.columsToDataMapping);
+
+  columnsToDisplayWithAction = [...this.columnsToDisplay, 'edit', 'cancel', 'delete'];
 
   userForm!: FormGroup;
 
@@ -88,5 +108,54 @@ export class PayrollComponent implements OnInit {
 
   get dataKeys() {
     return Object.keys(this.data);
+  }
+
+  tableData: any[] = [];
+
+  //practice for editable rows
+  loadData() {
+    this.http.get('https://jsonplaceholder.typicode.com/users').subscribe({
+      next: (res: any) => {
+        this.dataSource.data = res;
+      },
+      error: (err) => {
+        console.log('err', err);
+      }
+    })
+  }
+
+  onAddNewRow() {
+    const newRow: any = {
+      id: null,           
+      name: '',
+      email: '',
+      isEditable: true,
+      isNew: true
+    };
+
+    this.dataSource.data = [
+      newRow,
+      ...this.dataSource.data.map(r => ({ ...r, isEditable: false }))
+    ];
+  }
+
+  originalRowMap: any = {};
+
+  onEditClick(element: any) {
+    console.log(element.id);
+    this.originalRowMap[element.id] ??= { ...element };
+    this.dataSource.data = this.dataSource.data.map(rows => ({
+      ...rows,
+      isEditable: rows.id == element.id
+    }))
+  }
+
+  onCancelClick(row: any) {
+    const o = this.originalRowMap[row.id];
+    if (!o) return;
+    this.dataSource.data = this.dataSource.data.map(r =>
+      r.id === row.id ? { ...o, isEditable: false } : { ...r, isEditable: false }
+    );
+    delete this.originalRowMap[row.id];
   }
 }
