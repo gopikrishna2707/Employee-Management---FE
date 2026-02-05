@@ -19,6 +19,8 @@ import { fORMTYPES, noSpaceError } from '../constant';
 import { MatIcon } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { elementAt } from 'rxjs';
+import { ButtonComponent } from '../shared/components/button/button.component';
 
 @Component({
   selector: 'app-payroll',
@@ -36,7 +38,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
     MatOption,
     MatIcon,
     MatCardContent,
-    MatTableModule
+    MatTableModule,
+    ButtonComponent,
   ],
   templateUrl: './payroll.component.html',
   styleUrl: './payroll.component.scss',
@@ -44,25 +47,31 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 export class PayrollComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly http: HttpClient
-  ) { }
+    private readonly http: HttpClient,
+  ) {}
 
   ngOnInit() {
     this.buildForm();
     this.loadData();
   }
+
   columsToDataMapping: any = {
     id: 'id',
     Name: 'username',
     'E-mail': 'email',
-    WebSite: 'website'
-  }
+    WebSite: 'website',
+  };
 
   dataSource = new MatTableDataSource<any>([]);
 
   columnsToDisplay = Object.keys(this.columsToDataMapping);
 
-  columnsToDisplayWithAction = [...this.columnsToDisplay, 'edit', 'cancel', 'delete'];
+  columnsToDisplayWithAction = [
+    ...this.columnsToDisplay,
+    'edit',
+    'cancel',
+    'delete',
+  ];
 
   userForm!: FormGroup;
 
@@ -120,42 +129,75 @@ export class PayrollComponent implements OnInit {
       },
       error: (err) => {
         console.log('err', err);
+      },
+      complete:() => {
+        console.log("success");
       }
-    })
+    });
   }
 
   onAddNewRow() {
     const newRow: any = {
-      id: null,           
+      id: null,
       name: '',
       email: '',
       isEditable: true,
-      isNew: true
+      isNew: true,
     };
 
     this.dataSource.data = [
       newRow,
-      ...this.dataSource.data.map(r => ({ ...r, isEditable: false }))
+      ...this.dataSource.data.map((r) => ({ ...r, isEditable: false })),
     ];
   }
 
+  handleDeleteRow(event:any){
+    if(event){
+      this.dataSource.data = this.dataSource.data.filter((r) => r.isNew != true)
+    }
+  }
+
+  originalData: any = [];
+
   originalRowMap: any = {};
+
+  isEditable: boolean = true;
 
   onEditClick(element: any) {
     console.log(element.id);
-    this.originalRowMap[element.id] ??= { ...element };
-    this.dataSource.data = this.dataSource.data.map(rows => ({
-      ...rows,
-      isEditable: rows.id == element.id
-    }))
+    // this.originalRowMap[element.id] ??= { ...element };
+    // this.dataSource.data = this.dataSource.data.map(rows => ({
+    //   ...rows,
+    //   isEditable: rows.id == element.id
+    // }))
+    this.originalData = structuredClone(this.dataSource.data);
+    this.isEditable = false;
   }
 
   onCancelClick(row: any) {
-    const o = this.originalRowMap[row.id];
-    if (!o) return;
-    this.dataSource.data = this.dataSource.data.map(r =>
-      r.id === row.id ? { ...o, isEditable: false } : { ...r, isEditable: false }
-    );
-    delete this.originalRowMap[row.id];
+    this.isEditable = true;
+    this.dataSource.data = structuredClone(this.originalData);
+    // const o = this.originalRowMap[row.id];
+    // if (!o) return;
+    // this.dataSource.data = this.dataSource.data.map(r =>
+    //   r.id === row.id ? { ...o, isEditable: false } : { ...r, isEditable: false }
+    // );
+    // delete this.originalRowMap[row.id];
+  }
+
+  isModified:boolean = false;
+
+  rowChange(){
+    const currObj = JSON.stringify(this.dataSource.data);
+    const originalObj = JSON.stringify(this.originalData);
+    this.isModified = currObj !== originalObj;
+  }
+
+  handleSave(event: any) {
+    console.log('from payroll');
+    if (event) {
+      const payLoad = this.dataSource.data;
+      console.log(payLoad);
+    }
   }
 }
