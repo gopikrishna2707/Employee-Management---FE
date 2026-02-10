@@ -19,6 +19,7 @@ import { fORMTYPES, noSpaceError } from '../constant';
 import { MatIcon } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { EmsServiceService } from '../services/ems-service.service';
 
 @Component({
   selector: 'app-payroll',
@@ -44,7 +45,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 export class PayrollComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly http: HttpClient
+    private readonly http: HttpClient,
+    private readonly ser:EmsServiceService
   ) { }
 
   ngOnInit() {
@@ -157,5 +159,13 @@ export class PayrollComponent implements OnInit {
       r.id === row.id ? { ...o, isEditable: false } : { ...r, isEditable: false }
     );
     delete this.originalRowMap[row.id];
+  }
+
+  selected(event:any){
+    debugger
+    const value = event;
+    console.log('dropdown changed');
+    this.ser.state1$.next(value);
+    this.ser.state2$.next(value);
   }
 }

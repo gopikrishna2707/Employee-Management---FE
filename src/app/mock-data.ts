@@ -412,6 +412,6 @@ export const BASIC_ATTENDANCE = [
 
 export const MOCK_FORMDATA: any = {
   name:'gk',
-  password:'no',
+  password:'***',
   state:'ts'
 }

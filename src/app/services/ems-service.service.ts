@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, ViewChild } from '@angular/core';
-import { delay, map, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, delay, map, Observable, of, Subject, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment.prod';
 import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
@@ -23,6 +23,10 @@ export class EmsServiceService {
   ) { }
 
   employeeDataCache = signal<any[]>([]);
+
+  state1$ = new Subject();
+  
+  state2$ = new BehaviorSubject<any>('');
 
   isLoading = signal(false);
 
