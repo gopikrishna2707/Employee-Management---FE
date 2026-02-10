@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, ViewChild } from '@angular/core';
-import { BehaviorSubject, delay, map, Observable, of, Subject, tap } from 'rxjs';
+import { BehaviorSubject, delay, map, Observable, of, shareReplay, Subject, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment.prod';
 import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
@@ -69,6 +69,19 @@ export class EmsServiceService {
           return res;
         })
       );
+  }
+
+  //example for cached  data
+  private employeeByIdcache$ = new Map<string, Observable<any>>();
+
+  getemployeeById(id:string){
+    if(!this.employeeByIdcache$.has(id)){
+      const request$ = this.http.get(`${EmsServiceService.BASE_URL}/employees/${id}`).pipe(
+        shareReplay(1)
+      )
+      this.employeeByIdcache$.set(id, request$);
+    }
+    return this.employeeByIdcache$.get(id);
   }
 
   updateEmployeeById(empId: string, payLoad: any): Observable<any> {
