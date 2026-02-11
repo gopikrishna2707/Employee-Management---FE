@@ -31,7 +31,7 @@
 <mat-card>
   <mat-card-content>
     <button mat-stroked-button (click)="onAddNewRow()">Add row</button>
-    <app-button [buttonName]="'deleteRow'" [disabled]="false" (saveClick)="handleDeleteRow($event)">Delete Row</app-button>
+    <!-- <app-button [buttonName]="'deleteRow'" [disabled]="false" (saveClick)="handleDeleteRow($event)">Delete Row</app-button> -->
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
       <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>
@@ -81,6 +81,6 @@
       <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithAction"></tr>
       <tr mat-row *matRowDef="let row; columns:columnsToDisplayWithAction"></tr>
     </table>
-    <app-button [buttonName]="'Save'" (saveClick)="handleSave($event)" [disabled]="!isModified"></app-button>
+    <!-- <app-button [buttonName]="'Save'" (saveClick)="handleSave($event)" [disabled]="!isModified"></app-button> -->
   </mat-card-content>
 </mat-card>
