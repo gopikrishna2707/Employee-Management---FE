@@ -19,12 +19,7 @@ import { fORMTYPES, noSpaceError } from '../constant';
 import { MatIcon } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-<<<<<<< HEAD
-import { elementAt } from 'rxjs';
-import { ButtonComponent } from '../shared/components/button/button.component';
-=======
 import { EmsServiceService } from '../services/ems-service.service';
->>>>>>> 9f4a1470347472f991f7697228bb8b11c7ea710c
 
 @Component({
   selector: 'app-payroll',
@@ -43,7 +38,6 @@ import { EmsServiceService } from '../services/ems-service.service';
     MatIcon,
     MatCardContent,
     MatTableModule,
-    ButtonComponent,
   ],
   templateUrl: './payroll.component.html',
   styleUrl: './payroll.component.scss',
@@ -52,12 +46,8 @@ export class PayrollComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly http: HttpClient,
-<<<<<<< HEAD
-  ) {}
-=======
     private readonly ser:EmsServiceService
   ) { }
->>>>>>> 9f4a1470347472f991f7697228bb8b11c7ea710c
 
   ngOnInit() {
     this.buildForm();
