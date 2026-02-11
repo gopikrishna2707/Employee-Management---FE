@@ -23,3 +23,44 @@
   <div>Files Uplaoded</div>
   <div *ngFor="let file of filesUpload">{{ file.name }}</div>
 </div>
+
+<div [formGroup]="formGroup">
+  <mat-form-field appearance="fill">
+    <mat-label>select one</mat-label>
+    <input matInput 
+    formControlName="userDropDown"
+     [matAutocomplete]="auto" />
+    <!-- <mat-select>
+      <mat-option [value]="null">none</mat-option>
+      <mat-option *ngFor="let option of userList" [value]="option.id">{{option.name}}</mat-option>
+    </mat-select> -->
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filterList" [value]="option">{{option.name}}</mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+
+<!-- <div [formGroup]="formGroup">
+  <mat-form-field appearance="fill">
+    <mat-label>Select one</mat-label>
+
+    <input
+      matInput
+      formControlName="userDropDown"
+      [matAutocomplete]="auto"
+    />
+
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      [displayWith]="displayUser">
+
+      <mat-option
+        *ngFor="let option of filterList"
+        [value]="option">
+        {{ option.name }}
+      </mat-option>
+
+    </mat-autocomplete>
+  </mat-form-field>
+</div> -->
+

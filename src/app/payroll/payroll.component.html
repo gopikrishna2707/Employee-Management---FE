@@ -12,14 +12,15 @@
 
       <div>
         <mat-form-field *ngIf="getType(field) === 'input' && field === 'password'">
-          <input matInput type="text" [formControlName]="field" />
+          <input matInput type="text" formControlName="password" />
         </mat-form-field>
       </div>
       <!-- DROPDOWN -->
       <mat-form-field *ngIf="getType(field) === 'dropdown' && field==='state'" appearance="fill">
         <mat-label>{{field}}</mat-label>
-        <mat-select [formControlName]="field">
+        <mat-select [formControlName]="field" (valueChange)="selected($event)">
           <mat-option value="ap">Andhra Pradesh</mat-option>
+          <mat-option value="ts">Telanagana</mat-option>
         </mat-select>
       </mat-form-field>
     </ng-container>

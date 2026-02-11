@@ -6,6 +6,7 @@ import { EditEmployeeComponent } from './employee-details/edit-employee/edit-emp
 import { AttendanceDetailsComponent } from './attendance-details/attendance-details.component';
 import { Component } from '@angular/core';
 import { PayrollComponent } from './payroll/payroll.component';
+import { MastersComponent } from './masters/masters.component';
 
 export const PATH_EMPLOYEE:string = 'api/employee';
 export const PATH_ADD_EMPLOYEE:string = 'api/employee/action:add';
@@ -24,7 +25,7 @@ export const routes: Routes = [
   { path:`${PATH_EDIT_EMPLOYEE}/:eid`, component:AddEmployeesDialogComponent},
   { path: PATH_EMPLOYEE_DETAILS, component:EditEmployeeComponent},
   { path : PATH_EMPLOYEE_ATTENDANCE, component: AttendanceDetailsComponent},
-  {path : PATH_PAYROLL, loadComponent: () => import('./payroll/payroll.component').then(m => m.PayrollComponent)},
-  {path : PATH_MASTERS, loadComponent: () => import('./masters/masters.component').then(m => m.MastersComponent)},
+  {path : PATH_PAYROLL, component: PayrollComponent},
+  {path : PATH_MASTERS, component:MastersComponent},
   { path: '', redirectTo: PATH_HOME , pathMatch:'full'}
 ];

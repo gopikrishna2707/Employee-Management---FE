@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ColumnMapping } from '../models/columnToDataMapping';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableComponent } from '../shared/components/table/table.component';
@@ -32,11 +32,14 @@ import { EmsServiceService } from '../services/ems-service.service';
   templateUrl: './attendance-details.component.html',
   styleUrl: './attendance-details.component.scss',
 })
-export class AttendanceDetailsComponent {
+export class AttendanceDetailsComponent implements OnInit {
   constructor(private readonly snackBar: MatSnackBar,
     private readonly emsService:EmsServiceService
   ) {
     this.ondebounce();
+  }
+  ngOnInit(): void {
+    this.readValues();
   }
   
   dataSource = new MatTableDataSource<any>(BASIC_ATTENDANCE);
@@ -82,5 +85,16 @@ export class AttendanceDetailsComponent {
     const input = event.target as HTMLInputElement;
     const value = input.value;
     this.searchTextSubject.next(value);
+  }
+  readValues(){
+    this.emsService.state1$.subscribe(val => {
+      debugger
+      console.log(val);
+    })
+
+    this.emsService.state2$.subscribe(val => {
+      debugger
+      console.log(val);
+    })
   }
 }

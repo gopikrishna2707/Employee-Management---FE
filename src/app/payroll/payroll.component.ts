@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf, NgForOf } from '@angular/common';
 import { MOCK_FORMDATA, Mock_table_data } from '../mock-data';
 import { MatSelect, MatOption } from '@angular/material/select';
@@ -19,8 +19,12 @@ import { fORMTYPES, noSpaceError } from '../constant';
 import { MatIcon } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+<<<<<<< HEAD
 import { elementAt } from 'rxjs';
 import { ButtonComponent } from '../shared/components/button/button.component';
+=======
+import { EmsServiceService } from '../services/ems-service.service';
+>>>>>>> 9f4a1470347472f991f7697228bb8b11c7ea710c
 
 @Component({
   selector: 'app-payroll',
@@ -48,7 +52,12 @@ export class PayrollComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly http: HttpClient,
+<<<<<<< HEAD
   ) {}
+=======
+    private readonly ser:EmsServiceService
+  ) { }
+>>>>>>> 9f4a1470347472f991f7697228bb8b11c7ea710c
 
   ngOnInit() {
     this.buildForm();
@@ -199,5 +208,13 @@ export class PayrollComponent implements OnInit {
       const payLoad = this.dataSource.data;
       console.log(payLoad);
     }
+  }
+
+  selected(event:any){
+    debugger
+    const value = event;
+    console.log('dropdown changed');
+    this.ser.state1$.next(value);
+    this.ser.state2$.next(value);
   }
 }
