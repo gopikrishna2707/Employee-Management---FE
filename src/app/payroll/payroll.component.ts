@@ -9,7 +9,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, NgForOf } from '@angular/common';
+import { NgIf, NgForOf, JsonPipe } from '@angular/common';
 import { MOCK_FORMDATA, Mock_table_data } from '../mock-data';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatCard, MatCardContent } from '@angular/material/card';
@@ -18,6 +18,20 @@ import { MatIcon } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { EmsServiceService } from '../services/ems-service.service';
+
+export interface tableData{
+    employeeId: number,
+    fullName: string,
+    email: string,
+    phone: string,
+    gender: string,
+    dateOfJoining: string,
+    employeeType: string,
+    salary: number,
+    departmentName: string,
+    designationName: string,
+    isEditable : boolean
+}
 
 @Component({
   selector: 'app-payroll',
@@ -53,11 +67,13 @@ export class PayrollComponent implements OnInit {
   }
 
   columsToDataMapping: any = {
-    id: 'id',
-    Name: 'username',
+    id: 'employeeId',
+    Name: 'fullName',
     'E-mail': 'email',
     WebSite: 'website',
   };
+    Dept: 'departmentName'
+  }
 
   dataSource = new MatTableDataSource<any>([]);
 
@@ -116,13 +132,15 @@ export class PayrollComponent implements OnInit {
     return Object.keys(this.data);
   }
 
-  tableData: any[] = [];
+  tableData: tableData[] = [];
 
   //practice for editable rows
+   like: string = 'https://api.freeprojectapi.com/api/EmployeeApp/GetEmployees'
   loadData() {
-    this.http.get('https://jsonplaceholder.typicode.com/users').subscribe({
+    this.http.get(this.like).subscribe({
       next: (res: any) => {
-        this.dataSource.data = res;
+        this.tableData = res;
+        console.log(this.tableData);
       },
       error: (err) => {
         console.log('err', err);
@@ -133,19 +151,21 @@ export class PayrollComponent implements OnInit {
     });
   }
 
-  onAddNewRow() {
-    const newRow: any = {
-      id: null,
-      name: '',
-      email: '',
-      isEditable: true,
-      isNew: true,
-    };
 
-    this.dataSource.data = [
-      newRow,
-      ...this.dataSource.data.map((r) => ({ ...r, isEditable: false })),
-    ];
+  oldObj:any = {};
+
+  onEditClick(element:tableData){
+    if(!this.oldObj[element.employeeId]){
+      this.oldObj[element.employeeId] = structuredClone(element);
+    }
+    element.isEditable = true;
+    console.log(this.oldObj);
+    //for ony one line at a time
+    // element.isEditable = true;
+    // console.log(this.tableData);
+    // this.oldObj = structuredClone(element);
+    //for full table ediable
+    //this.isEditable = true;
   }
 
   handleDeleteRow(event:any){
@@ -156,50 +176,19 @@ export class PayrollComponent implements OnInit {
 
   originalData: any = [];
 
-  originalRowMap: any = {};
-
-  isEditable: boolean = true;
-
-  onEditClick(element: any) {
-    console.log(element.id);
-    // this.originalRowMap[element.id] ??= { ...element };
-    // this.dataSource.data = this.dataSource.data.map(rows => ({
-    //   ...rows,
-    //   isEditable: rows.id == element.id
-    // }))
-    this.originalData = structuredClone(this.dataSource.data);
-    this.isEditable = false;
-  }
-
-  onCancelClick(row: any) {
-    this.isEditable = true;
-    this.dataSource.data = structuredClone(this.originalData);
-    // const o = this.originalRowMap[row.id];
-    // if (!o) return;
-    // this.dataSource.data = this.dataSource.data.map(r =>
-    //   r.id === row.id ? { ...o, isEditable: false } : { ...r, isEditable: false }
-    // );
-    // delete this.originalRowMap[row.id];
-  }
-
-  isModified:boolean = false;
-
-  rowChange(){
-    const currObj = JSON.stringify(this.dataSource.data);
-    const originalObj = JSON.stringify(this.originalData);
-    this.isModified = currObj !== originalObj;
-  }
-
-  handleSave(event: any) {
-    console.log('from payroll');
-    if (event) {
-      const payLoad = this.dataSource.data;
-      console.log(payLoad);
-    }
+  onCancelClick(element:tableData){
+    Object.assign(element, this.oldObj[element.employeeId]);
+    element.isEditable = false;
+    // element.isEditable = false;
+    // element.employeeId = this.oldObj.employeeId;
+    // element.email = this.oldObj.email;
+    // element.fullName = this.oldObj.fullName;
+    // element.departmentName = this.oldObj.departmentName;
+    //for full table
+    //this.isEdiable = false;
   }
 
   selected(event:any){
-    debugger
     const value = event;
     console.log('dropdown changed');
     this.ser.state1$.next(value);

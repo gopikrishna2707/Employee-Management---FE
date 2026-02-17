@@ -30,23 +30,21 @@
 
 <mat-card>
   <mat-card-content>
-    <button mat-stroked-button (click)="onAddNewRow()">Add row</button>
-    <!-- <app-button [buttonName]="'deleteRow'" [disabled]="false" (saveClick)="handleDeleteRow($event)">Delete Row</app-button> -->
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+    <button mat-stroked-button>Add row</button>
+    <table mat-table [dataSource]="tableData" class="mat-elevation-z1">
       <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>
           {{column}}
         </th>
         <td mat-cell *matCellDef="let element">
-          <ng-container *ngIf="!isEditable; else viewMode">
-           <mat-form-field>
-             <input matInput [(ngModel)]="element[columsToDataMapping[column]]"
-              [ngModelOptions]="{ standalone: true }" (ngModelChange)="rowChange()" />
-           </mat-form-field>
+          <ng-container *ngIf="element.isEditable else viewMode">
+            <mat-form-field>
+              <input matInput [(ngModel)]="element[columsToDataMapping[column]]" [ngModelOptions]="{standalone:true}"
+                type="text" />
+            </mat-form-field>
           </ng-container>
-
           <ng-template #viewMode>
-            {{ element[columsToDataMapping[column]] }}
+            {{element[columsToDataMapping[column]]}}
           </ng-template>
         </td>
       </ng-container>

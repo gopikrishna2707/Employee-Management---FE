@@ -88,12 +88,10 @@ export class AttendanceDetailsComponent implements OnInit {
   }
   readValues(){
     this.emsService.state1$.subscribe(val => {
-      debugger
       console.log(val);
     })
 
     this.emsService.state2$.subscribe(val => {
-      debugger
       console.log(val);
     })
   }
