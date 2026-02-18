@@ -72,9 +72,7 @@ export class PayrollComponent implements OnInit {
     'E-mail': 'email',
     WebSite: 'website',
   };
-    Dept: 'departmentName'
-  }
-
+  
   dataSource = new MatTableDataSource<any>([]);
 
   columnsToDisplay = Object.keys(this.columsToDataMapping);
