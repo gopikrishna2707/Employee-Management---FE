@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, ViewChild } from '@angular/core';
-import { BehaviorSubject, delay, map, Observable, of, shareReplay, Subject, tap } from 'rxjs';
+import { BehaviorSubject, catchError, delay, forkJoin, map, Observable, of, shareReplay, Subject, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment.prod';
 import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
@@ -46,6 +46,26 @@ export class EmsServiceService {
         return res;
       })
     );
+  }
+
+  getAllemployeeDetails(): Observable<any>{
+   console.log('called fork')
+   return forkJoin({
+      user: this.http.get(`${EmsServiceService.BASE_URL}/employees`).pipe(catchError(
+        (err) => {
+          return of([])
+        }
+      )),
+      userBasic : this.http.get(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
+        catchError(err => {
+          return of([])
+        })
+      )
+    }).pipe(
+      map((res:any) => {
+        return res;
+      })
+    )
   }
 
   addEmployee(config: any): Observable<any> {

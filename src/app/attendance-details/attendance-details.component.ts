@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SlicingPipe } from '../shared/pipes/slicingPipe';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatInput, MatInputModule } from "@angular/material/input";
 import { debounce, debounceTime, filter, Subject } from 'rxjs';
@@ -40,6 +40,7 @@ export class AttendanceDetailsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.readValues();
+    this.getData();
   }
   
   dataSource = new MatTableDataSource<any>(BASIC_ATTENDANCE);
@@ -95,4 +96,32 @@ export class AttendanceDetailsComponent implements OnInit {
       console.log(val);
     })
   }
+
+  user:any[] = [];
+  userBasic:any[] = [];
+  getData(){
+    this.emsService.getAllemployeeDetails().subscribe({
+      next:(res:any) => {
+        console.log("fork join attendance");
+        console.log(res);
+        this.user = res.user;
+        this.userBasic = res.userBasic;
+        console.log(this.user);
+        console.log(this.userBasic);
+
+      },
+      error:(err) => {
+        console.log('error',err);
+      }
+    })
+  }
+
+  // formExample = new FormControl();
+
+  // userForm!:FormGroup;
+
+  // this.userForm = this.fb.group({
+  //  ex1 : ['', ],
+  //  ex2 : ['']
+  // })
 }
