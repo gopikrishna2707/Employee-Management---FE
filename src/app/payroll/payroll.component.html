@@ -6,7 +6,7 @@
       <div>
         <mat-form-field *ngIf="getType(field) === 'input' && field === 'name'" appearance="fill">
           <mat-label>{{field}}</mat-label>
-          <input matInput type='text' [formControlName]="field">
+          <input [disabled]="isdisable" matInput type='text' [formControlName]="field">
         </mat-form-field>
       </div>
 

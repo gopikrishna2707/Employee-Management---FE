@@ -142,8 +142,8 @@ export class MastersComponent implements OnInit {
 
   initializeForm() {
     this.formGroup = this.formBuilder.group({
-      userDropDown: ['',],
-      example:['',]
+      userDropDown: [''],
+      example:[{value:'', disabled:true}]
     })
   }
 
@@ -157,6 +157,8 @@ export class MastersComponent implements OnInit {
   }
 
   search = new Subject<string>();
+
+  isEdit:boolean = false;
 
 
   // setUpFilter(event:Event){
@@ -193,6 +195,7 @@ export class MastersComponent implements OnInit {
     ).subscribe((res)=> {
       console.log(res);
     })
+    this.isEdit = false;
   }
 
   isLoad:boolean = false;

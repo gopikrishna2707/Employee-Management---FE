@@ -1,0 +1,47 @@
+const promise = new Promise((resolve, reject) => {
+  // async work
+  if (success) {
+    resolve(value);
+  } else {
+    reject(error);
+  }
+});
+
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Data received");
+  }, 2000);
+});
+
+myPromise.then(result => {
+  console.log(result);
+});
+
+//promise chainng
+new Promise((resolve, reject) => {
+  resolve(10);
+})
+.then(num => {
+  return num * 2;
+})
+.then(result => {
+  return result + 5;
+})
+.then(final => {
+  console.log(final);
+});
+
+function getData() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("Data received");
+    }, 2000);
+  });
+}
+
+async function fetchData() {
+  const result = await getData();
+  console.log(result);
+}
+
+fetchData();

@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   FormsModule,
@@ -112,6 +113,7 @@ export class PayrollComponent implements OnInit {
       addFields['newvalue'] = this.formBuilder.control('', [
         Validators.required,
         noSpaceError,
+        this.customValidator
       ]);
     }
 
@@ -209,4 +211,9 @@ export class PayrollComponent implements OnInit {
       }
     })
   }
+
+   customValidator(control:AbstractControl):Validators | null{
+    return control.value.includes('') ? {no:true} : null;
+  }
+  isdisable = false;
 }

@@ -28,7 +28,7 @@
   <div>
   <mat-form-field>
     <mat-label>example</mat-label>
-    <input matInput formControlName="example"/>
+    <input [disabled]="!isEdit" matInput formControlName="example"/>
   </mat-form-field>
 </div>
 

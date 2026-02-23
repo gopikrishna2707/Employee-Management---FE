@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, ViewChild } from '@angular/core';
-import { BehaviorSubject, catchError, debounceTime, delay, forkJoin, interval, map, mergeMap, Observable, of, shareReplay, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, debounceTime, delay, forkJoin, from, interval, map, mergeMap, Observable, of, shareReplay, Subject, switchMap, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment.prod';
 import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
@@ -181,5 +181,15 @@ export class EmsServiceService {
         return res.id;
       })
     )
+  }
+
+  getCombie(){
+   return this.getEmployees().pipe(
+    mergeMap(empres => this.getEmployeesDetails().pipe(
+      map(detailres => ({
+         emp:empres, det:detailres
+      }))
+    ))
+   )
   }
 }

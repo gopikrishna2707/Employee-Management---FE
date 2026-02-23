@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'existedvalue',
-  standalone: true
+  standalone: true,
 })
 export class ExistedvaluePipe implements PipeTransform {
 
