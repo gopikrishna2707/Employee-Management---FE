@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf, NgForOf, JsonPipe } from '@angular/common';
-import { MOCK_FORMDATA, Mock_table_data } from '../mock-data';
+import { DataApi, MOCK_FORMDATA, Mock_table_data } from '../mock-data';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { fORMTYPES, noSpaceError } from '../constant';
@@ -60,6 +60,8 @@ export class PayrollComponent implements OnInit {
     private readonly http: HttpClient,
     private readonly ser:EmsServiceService
   ) { }
+
+  service = inject(EmsServiceService);
 
   ngOnInit() {
     this.buildForm();
@@ -112,6 +114,10 @@ export class PayrollComponent implements OnInit {
         noSpaceError,
       ]);
     }
+
+    Object.keys(this.data).forEach((key) => {
+      addFields[key] = this.formBuilder.control('',[])
+    })
 
     this.userForm = this.formBuilder.group(addFields);
   }
@@ -191,5 +197,16 @@ export class PayrollComponent implements OnInit {
     console.log('dropdown changed');
     this.ser.state1$.next(value);
     this.ser.state2$.next(value);
+  }
+
+  getDetails(){
+    this.ser.getDetails().subscribe({
+      next:(res) => {
+        return res;
+      },
+      error:(err) => {
+        console.log('err');
+      }
+    })
   }
 }

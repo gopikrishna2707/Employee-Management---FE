@@ -8,11 +8,12 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { HeaderComponent } from "./header/header.component";
 import { HttpClientModule } from '@angular/common/http';
+import { LoginPageComponent } from "./auth/login-page/login-page.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatCardModule, MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, MatTableModule, HeaderComponent,HttpClientModule],
+  imports: [RouterOutlet, MatCardModule, MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, MatTableModule, HeaderComponent, HttpClientModule, LoginPageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

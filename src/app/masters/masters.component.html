@@ -25,19 +25,27 @@
 </div>
 
 <div [formGroup]="formGroup">
+  <div>
+  <mat-form-field>
+    <mat-label>example</mat-label>
+    <input matInput formControlName="example"/>
+  </mat-form-field>
+</div>
+
   <mat-form-field appearance="fill">
     <mat-label>select one</mat-label>
     <input matInput 
     formControlName="userDropDown"
-     [matAutocomplete]="auto" />
+    [matAutocomplete]="auto"
+     />
     <!-- <mat-select>
-      <mat-option [value]="null">none</mat-option>
       <mat-option *ngFor="let option of userList" [value]="option.id">{{option.name}}</mat-option>
     </mat-select> -->
-    <mat-autocomplete #auto="matAutocomplete">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUser">
       <mat-option *ngFor="let option of filterList" [value]="option">{{option.name}}</mat-option>
     </mat-autocomplete>
   </mat-form-field>
+ <!-- <mat-error *ngIf="filterList.length == 0 && !isLoad">No Results found</mat-error> -->
 </div>
 
 <!-- <div [formGroup]="formGroup">
@@ -63,4 +71,6 @@
     </mat-autocomplete>
   </mat-form-field>
 </div> -->
-
+<!-- <div *ngIf="isLoad">
+  <mat-spinner></mat-spinner>
+</div> -->

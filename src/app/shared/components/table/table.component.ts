@@ -46,7 +46,7 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   @Input({ required: true }) columnsToDisplay: any[] = [];
 
-  @Input({ required: true }) mapping: Record<string, string> = {};
+  @Input() mapping: any = {};
 
   @Output() editClick = new EventEmitter<any>();
 
@@ -54,7 +54,7 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+ @ViewChild(MatPaginator) paginator!:MatPaginator;
 
   get columnsToDisplayAction() {
     return [...this.columnsToDisplay, 'edit', 'delete'];

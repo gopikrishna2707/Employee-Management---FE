@@ -415,3 +415,7 @@ export const MOCK_FORMDATA: any = {
   password:'***',
   state:'ts'
 }
+export interface DataApi{
+  data:string,
+  id:number
+}

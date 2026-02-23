@@ -1,9 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, signal, ViewChild } from '@angular/core';
-import { BehaviorSubject, catchError, delay, forkJoin, map, Observable, of, shareReplay, Subject, tap } from 'rxjs';
+import { BehaviorSubject, catchError, debounceTime, delay, forkJoin, interval, map, mergeMap, Observable, of, shareReplay, Subject, switchMap, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment.prod';
 import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
+import { loginObj } from '../auth/login-page/login-page.component';
+import { DataApi } from '../mock-data';
 
 
 @Injectable({
@@ -13,9 +15,9 @@ export class EmsServiceService {
 
   private static readonly BASE_URL = environment.apiBaseUrl;
 
-  searchLength:number = 3;
+  searchLength: number = 3;
 
-  @ViewChild(EmployeeDetailsComponent) employeeComponent!:EmployeeDetailsComponent;
+  @ViewChild(EmployeeDetailsComponent) employeeComponent!: EmployeeDetailsComponent;
 
   constructor(
     private readonly http: HttpClient,
@@ -25,7 +27,7 @@ export class EmsServiceService {
   employeeDataCache = signal<any[]>([]);
 
   state1$ = new Subject();
-  
+
   state2$ = new BehaviorSubject<any>('');
 
   isLoading = signal(false);
@@ -33,6 +35,7 @@ export class EmsServiceService {
 
   getEmployees(): Observable<any> {
     return this.http.get<any>(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
+      shareReplay(1),
       map((res: any) => {
         return res;
       })
@@ -48,21 +51,21 @@ export class EmsServiceService {
     );
   }
 
-  getAllemployeeDetails(): Observable<any>{
-   console.log('called fork')
-   return forkJoin({
+  getAllemployeeDetails(): Observable<any> {
+    console.log('called fork')
+    return forkJoin({
       user: this.http.get(`${EmsServiceService.BASE_URL}/employees`).pipe(catchError(
         (err) => {
           return of([])
         }
       )),
-      userBasic : this.http.get(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
+      userBasic: this.http.get(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
         catchError(err => {
           return of([])
         })
       )
     }).pipe(
-      map((res:any) => {
+      map((res: any) => {
         return res;
       })
     )
@@ -94,8 +97,8 @@ export class EmsServiceService {
   //example for cached  data
   private employeeByIdcache$ = new Map<string, Observable<any>>();
 
-  getemployeeById(id:string){
-    if(!this.employeeByIdcache$.has(id)){
+  getemployeeById(id: string) {
+    if (!this.employeeByIdcache$.has(id)) {
       const request$ = this.http.get(`${EmsServiceService.BASE_URL}/employees/${id}`).pipe(
         shareReplay(1)
       )
@@ -137,7 +140,46 @@ export class EmsServiceService {
       )
   }
 
-  viewing(){
+  viewing() {
     console.log("view child");
+  }
+
+  userWithToken(formData: loginObj): Observable<any> {
+    return this.http.post<any>('https://dummyjson.com/auth/login', formData).pipe(
+      map((res: any) => {
+        return res;
+      })
+    )
+  }
+
+
+  getDetails(): Observable<DataApi[]> {
+    return this.http.get<DataApi[]>(`${EmsServiceService.BASE_URL}/employee`).pipe(
+      map((res: any) => {
+        return res.data;
+      })
+    )
+  }
+
+  getInterval():Observable<any>{
+    return interval(2000).pipe(
+      switchMap(() => 
+        this.http.get('')
+      ),
+      map((res) => {
+        return res;
+      })
+    )
+  }
+
+  callApi(){
+    return forkJoin({
+      employe:this.http.get<DataApi>(''),
+      id:this.http.get('')
+    }).pipe(
+      map(res => {
+        return res.id;
+      })
+    )
   }
 }

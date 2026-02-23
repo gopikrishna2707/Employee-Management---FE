@@ -54,6 +54,7 @@ import { BASIC_MOCK } from '../mock-data';
 ],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
+  
 })
 export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   constructor(
@@ -206,7 +207,9 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
 
   setupSearchDebounce(): void {
     this.searchSubject
-      .pipe(debounceTime(200), distinctUntilChanged())
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged())
       .subscribe((value) => {
         this.searchDetails(value);
       });
@@ -214,6 +217,8 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
 
   searchDetails(value: string) {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
+    const snapshot = this.acivatedRoute.snapshot;
+    console.log(snapshot.queryParams)
   }
 
   filteringValues() {

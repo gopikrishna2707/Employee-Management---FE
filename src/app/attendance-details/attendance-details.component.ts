@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ColumnMapping } from '../models/columnToDataMapping';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableComponent } from '../shared/components/table/table.component';
-import { BASIC_ATTENDANCE } from '../mock-data';
+import { BASIC_ATTENDANCE, Mock_table_data } from '../mock-data';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SlicingPipe } from '../shared/pipes/slicingPipe';
@@ -13,6 +13,8 @@ import { MatInput, MatInputModule } from "@angular/material/input";
 import { debounce, debounceTime, filter, Subject } from 'rxjs';
 import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
 import { EmsServiceService } from '../services/ems-service.service';
+import { NormalTableComponent } from "../shared/components/normal-table/normal-table.component";
+import { ChildComponent } from "./child/child.component";
 
 @Component({
   selector: 'app-attendance-details',
@@ -27,7 +29,9 @@ import { EmsServiceService } from '../services/ems-service.service';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    NormalTableComponent,
+    ChildComponent
 ],
   templateUrl: './attendance-details.component.html',
   styleUrl: './attendance-details.component.scss',
@@ -41,19 +45,21 @@ export class AttendanceDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.readValues();
     this.getData();
+    this.exampleCd();
   }
   
-  dataSource = new MatTableDataSource<any>(BASIC_ATTENDANCE);
+  dataSource = new MatTableDataSource<any>(Mock_table_data);
 
   value: string = 'abc';
 
   searchText:string = '';
 
   columnsDataMapping: ColumnMapping = {
-    ID: 'id',
-    'Time-In': 'clock_in',
-    'Time-Out': 'clock_out',
-    Today: 'today_in',
+    name: 'name',
+    salary: 'salary',
+    department: 'department',
+    email: 'email',
+    contact: 'contact',
   };
 
   columnsToDisplay = Object.keys(this.columnsDataMapping);
@@ -124,4 +130,21 @@ export class AttendanceDetailsComponent implements OnInit {
   //  ex1 : ['', ],
   //  ex2 : ['']
   // })
+
+  exampleCd(){
+    console.log('parent called');
+  }
+
+  //cd example
+  cd = [{id:1},{id:2}];
+
+  counter:number = 0
+  increment(){
+    this.counter++;
+  }
+  updateData(){
+    //this.cd[0].id = 1;
+    this.cd = [{...this.cd[0], id:3}, this.cd[1]]
+  }
 }
+

@@ -1,16 +1,29 @@
 <mat-card>
-  <mat-form-field appearance="outline">
+  <!-- <mat-form-field appearance="outline">
     <mat-label>search</mat-label>
     <input matInput type="text" (input)="handleSearch($event)">
-  </mat-form-field>
+  </mat-form-field> -->
   <mat-card-content>
-    <app-table
+    <!-- <app-table
       [data]="dataSource.data"
       [columnsToDisplay]="columnsToDisplay"
       [mapping]="columnsDataMapping"
       (editClick)="handleEditEvent($event)"
       (deleteClick)="handleDeleteEvent($event)"
     >
-    </app-table>
+    </app-table> -->
+    <!-- <app-normal-table
+     [Tabledata]="dataSource.data"
+     [columnsToDiaplay]="columnsToDisplay"
+    >
+    </app-normal-table> -->
+    <h2>Parent Component</h2>
+
+<p>Counter: {{ counter }}</p>
+
+<button (click)="increment()">Increment Counter</button>
+<button (click)="updateData()">Update User Name</button>
+
+<app-child [tableData]="cd"></app-child>
   </mat-card-content>
 </mat-card>
