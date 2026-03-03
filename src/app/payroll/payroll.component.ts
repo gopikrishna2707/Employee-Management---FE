@@ -113,7 +113,6 @@ export class PayrollComponent implements OnInit {
       addFields['newvalue'] = this.formBuilder.control('', [
         Validators.required,
         noSpaceError,
-        this.customValidator
       ]);
     }
 
@@ -200,20 +199,4 @@ export class PayrollComponent implements OnInit {
     this.ser.state1$.next(value);
     this.ser.state2$.next(value);
   }
-
-  getDetails(){
-    this.ser.getDetails().subscribe({
-      next:(res) => {
-        return res;
-      },
-      error:(err) => {
-        console.log('err');
-      }
-    })
-  }
-
-   customValidator(control:AbstractControl):Validators | null{
-    return control.value.includes('') ? {no:true} : null;
-  }
-  isdisable = false;
 }

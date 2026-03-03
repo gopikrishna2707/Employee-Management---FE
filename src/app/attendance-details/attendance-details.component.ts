@@ -21,17 +21,11 @@ import { ChildComponent } from "./child/child.component";
   standalone: true,
   imports: [
     CommonModule,
-    TableComponent,
     MatCardModule,
-    SlicingPipe,
-    MatFormField,
-    MatLabel,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
-    NormalTableComponent,
-    ChildComponent
 ],
   templateUrl: './attendance-details.component.html',
   styleUrl: './attendance-details.component.scss',
@@ -44,15 +38,9 @@ export class AttendanceDetailsComponent implements OnInit {
   }
   ngOnInit(): void {
     this.readValues();
-    this.getData();
-    this.exampleCd();
   }
   
   dataSource = new MatTableDataSource<any>(Mock_table_data);
-
-  value: string = 'abc';
-
-  searchText:string = '';
 
   columnsDataMapping: ColumnMapping = {
     name: 'name',
@@ -101,50 +89,6 @@ export class AttendanceDetailsComponent implements OnInit {
     this.emsService.state2$.subscribe(val => {
       console.log(val);
     })
-  }
-
-  user:any[] = [];
-  userBasic:any[] = [];
-  getData(){
-    this.emsService.getAllemployeeDetails().subscribe({
-      next:(res:any) => {
-        console.log("fork join attendance");
-        console.log(res);
-        this.user = res.user;
-        this.userBasic = res.userBasic;
-        console.log(this.user);
-        console.log(this.userBasic);
-
-      },
-      error:(err) => {
-        console.log('error',err);
-      }
-    })
-  }
-
-  // formExample = new FormControl();
-
-  // userForm!:FormGroup;
-
-  // this.userForm = this.fb.group({
-  //  ex1 : ['', ],
-  //  ex2 : ['']
-  // })
-
-  exampleCd(){
-    console.log('parent called');
-  }
-
-  //cd example
-  cd = [{id:1},{id:2}];
-
-  counter:number = 0
-  increment(){
-    this.counter++;
-  }
-  updateData(){
-    //this.cd[0].id = 1;
-    this.cd = [{...this.cd[0], id:3}, this.cd[1]]
   }
 }
 
