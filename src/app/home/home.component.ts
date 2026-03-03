@@ -19,15 +19,9 @@ export class HomeComponent {
   homeButtonList:any[] = [
     { name: 'Create Employee', path: PATH_ADD_EMPLOYEE},
     { name:'All employees', path: PATH_EMPLOYEE },
-    // { name:'Employee Details', path: PATH_EMPLOYEE_DETAILS}
   ];
-
-  arr: any[] = ['apld', 'bbws', 'djbsb','sffe'];
+  
   redirectTo(path:any) {
     this.router.navigate([path]);
-    this.arr.forEach((a) => {
-      console.log(a.length);
-    })
-
   }
 }
