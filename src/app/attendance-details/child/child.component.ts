@@ -23,6 +23,4 @@ export class ChildComponent implements OnInit, OnChanges, DoCheck {
   ngOnInit(): void {
     console.log('called ngoninit');
   }
-  
-
 }

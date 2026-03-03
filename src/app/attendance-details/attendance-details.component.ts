@@ -30,65 +30,6 @@ import { ChildComponent } from "./child/child.component";
   templateUrl: './attendance-details.component.html',
   styleUrl: './attendance-details.component.scss',
 })
-export class AttendanceDetailsComponent implements OnInit {
-  constructor(private readonly snackBar: MatSnackBar,
-    private readonly emsService:EmsServiceService
-  ) {
-    this.ondebounce();
-  }
-  ngOnInit(): void {
-    this.readValues();
-  }
-  
-  dataSource = new MatTableDataSource<any>(Mock_table_data);
-
-  columnsDataMapping: ColumnMapping = {
-    name: 'name',
-    salary: 'salary',
-    department: 'department',
-    email: 'email',
-    contact: 'contact',
-  };
-
-  columnsToDisplay = Object.keys(this.columnsDataMapping);
-
-  handleEditEvent(editEvent: any) {
-    console.log(editEvent.id);
-    this.snackBar.open('edit clicked', 'close', { duration: 3000 });
-    this.emsService.viewing();
-  }
-  
-  handleDeleteEvent(deleteEvent: any) {
-    console.log(deleteEvent);
-    this.snackBar.open('delete clicked', 'close', { duration: 3000 });
-  }
-
-  private readonly searchTextSubject = new Subject<string>();
-
-  ondebounce(){
-    this.searchTextSubject
-     .pipe(debounceTime(500), filter(v => v.length >= 3)).subscribe((value) => {
-      this.calApi(value);
-     })
-  }
-
-  calApi(value:string){
-    console.log(value);
-  }
-  
-  handleSearch(event : Event){
-    const input = event.target as HTMLInputElement;
-    const value = input.value;
-    this.searchTextSubject.next(value);
-  }
-  readValues(){
-    this.emsService.state1$.subscribe(val => {
-      console.log(val);
-    })
-
-    this.emsService.state2$.subscribe(val => {
-      console.log(val);
-    })
-  }
+export class AttendanceDetailsComponent{
 }
 
