@@ -30,9 +30,11 @@ import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-e
 import {
   debounceTime,
   distinctUntilChanged,
+  filter,
   Subject,
 } from 'rxjs';
 import { BASIC_MOCK } from '../mock-data';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-employee-details',
@@ -62,7 +64,8 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private acivatedRoute : ActivatedRoute
+    private acivatedRoute : ActivatedRoute,
+    readonly authService:AuthService
   ) {}
 
   mockData = BASIC_MOCK;
@@ -85,6 +88,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     this.acivatedRoute.paramMap.subscribe((params) => {
       this.id = params.get('eid');
     })
+    //console.log(this.authService.isUserLogged$)
   }
 
   ngAfterViewInit(): void {
@@ -218,11 +222,11 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   searchDetails(value: string) {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
     const snapshot = this.acivatedRoute.snapshot;
-    console.log(snapshot.queryParams)
+    console.log(snapshot.queryParams);
   }
 
   filteringValues() {
-    const fieldsToFilter = ['id', 'name', 'email', 'currentlyWorking']; // Add more fields easily here
+    const fieldsToFilter = ['id', 'name', 'email', 'currentlyWorking'];// Add more fields easily here
     this.dataSource.filterPredicate = (data, filter) => {
       const lowerFilter = filter.trim().toLowerCase();
       return fieldsToFilter.some((field) =>
@@ -247,7 +251,6 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   }
 
   trackById(index:number, column:any){
-    console.log('Tracking ID:', column.id);
     return column.id;
   }
 }

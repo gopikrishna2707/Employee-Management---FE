@@ -1,0 +1,44 @@
+<mat-card class="content-margin">
+  <mat-card-header class="font-large font-bold">
+    Roles and permissions
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field appearance="outline" class="form-field margin-small-top">
+      <mat-label>Search employee</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        type="text"
+        matInput
+        id="search-project-input"
+        formControlName="searchControl"
+      />
+    </mat-form-field>
+    <form [formGroup]="userForm">
+      <mat-card-header class="font-medium">Roles</mat-card-header>
+      <mat-selection-list formControlName="selectedRoles">
+        <mat-list-option *ngFor="let role of roles" [value]="role">
+          {{ role }}
+        </mat-list-option>
+      </mat-selection-list>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-header class="font-medium"
+        >Available Permissions</mat-card-header
+      >
+      <mat-selection-list
+        formControlName="selectedPermissions"
+        class="two-column-grid"
+      >
+        <mat-list-option *ngFor="let p of permissions" [value]="p">
+          {{ p }}
+        </mat-list-option>
+      </mat-selection-list>
+
+      <mat-card-footer class="align-right gap-10">
+        <button mat-button (click)="onCancel()">Cancel</button>
+        <button mat-stroked-button (click)="onSubmit()" [disabled]="!userForm" >Save</button>
+      </mat-card-footer>
+    </form>
+  </mat-card-content>
+</mat-card>

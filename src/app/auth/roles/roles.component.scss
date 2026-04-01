@@ -1,0 +1,12 @@
+/* This targets the list and turns it into a 2-column grid */
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 10px;                      /* Space between columns */
+}
+/* Responsive: If screen is small, go back to 1 column */
+@media (max-width: 600px) {
+  .two-column-grid {
+    grid-template-columns: 1fr;
+  }
+}

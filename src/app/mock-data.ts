@@ -377,38 +377,58 @@ export const BASIC_MOCK = [
   },
 ];
 
-export const BASIC_ATTENDANCE = [
-  {
-    id: 1,
-    clock_in: '09:00:00',
-    clock_out: '17:30:00',
-    today_in: '2026-01-05',
-  },
-  {
-    id: 2,
-    clock_in: '08:45:00',
-    clock_out: '16:45:00',
-    today_in: '2026-01-05',
-  },
-  {
-    id: 3,
-    clock_in: '10:00:00',
-    clock_out: '18:00:00',
-    today_in: '2026-01-05',
-  },
-  {
-    id: 4,
-    clock_in: '09:15:00',
-    clock_out: '17:00:00',
-    today_in: '2026-01-05',
-  },
-  {
-    id: 5,
-    clock_in: '08:30:00',
-    clock_out: '17:15:00',
-    today_in: '2026-01-05',
-  },
-];
+export const BASIC_ATTENDANCE = {
+  id: 'EMP001',
+  month: 'March',
+  year: 2026,
+  total_working_days: 20,
+  current_working_days: 10,
+
+  records: [
+    {
+      date: '2026-03-01',
+      check_in: '09:10',
+      check_out: '18:05',
+      total_hours: 8.9,
+      status: 'PRESENT'
+    },
+    {
+      date: '2026-03-02',
+      check_in: null,
+      check_out: null,
+      total_hours: 0,
+      status: 'ABSENT'
+    },
+    {
+      date: '2026-03-03',
+      check_in: '09:30',
+      check_out: '13:00',
+      total_hours: 3.5,
+      status: 'HALF_DAY'
+    },
+    {
+      date: '2026-03-04',
+      check_in: '09:00',
+      check_out: '17:55',
+      total_hours: 7.9,
+      status: 'PRESENT'
+    },
+    {
+      date: '2026-03-05',
+      check_in: null,
+      check_out: null,
+      total_hours: 0,
+      status: 'HOLIDAY'
+    },
+    {
+      date: '2026-03-06',
+      check_in: '09:15',
+      check_out: '18:20',
+      total_hours: 9.0,
+      status: 'PRESENT'
+    }
+  ]
+};
 
 export const MOCK_FORMDATA: any = {
   name:'gk',

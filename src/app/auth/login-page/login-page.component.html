@@ -1,11 +1,38 @@
-<form [formGroup]="loginForm">
-    <mat-form-field>
+<div class="page-container">
+  <mat-card>
+    <form [formGroup]="loginForm" class="flex-direction">
+      <mat-form-field>
         <mat-label>Email</mat-label>
         <input matInput type="text" formControlName="username" />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>password</mat-label>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Password</mat-label>
         <input matInput type="password" formControlName="password" />
-    </mat-form-field>
-    <button mat-stroked-button (click)="onSubmit()" >Submit</button>
-</form>
+      </mat-form-field>
+
+      <ng-container *ngIf="toggleForm">
+        <mat-form-field>
+          <mat-label>Select the role</mat-label>
+          <mat-select formControlName="roleSelection">
+            <mat-option *ngFor="let roles of userRoles" [value]="roles.role">
+              {{ roles.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+
+      <div class="justify-between">
+        <button *ngIf="toggleForm" (click)="onSignupClick()" mat-flat-button>
+          Login
+        </button>
+        <button *ngIf="!toggleForm" () mat-flat-button (click)="onSignupClick()">
+          Sign-up
+        </button>
+        <button class="mat-primary" mat-stroked-button (click)="onSubmit()">
+          Submit
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

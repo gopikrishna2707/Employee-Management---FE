@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -6,9 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import { PATH_ADD_EMPLOYEE, PATH_EMPLOYEE, PATH_EMPLOYEE_ATTENDANCE, PATH_HOME, PATH_MASTERS, PATH_PAYROLL } from '../app.routes';
+import { PATH_ADD_EMPLOYEE, PATH_EMPLOYEE, PATH_EMPLOYEE_ATTENDANCE, PATH_HOME, PATH_LOGIN, PATH_MASTERS, PATH_PAYROLL, PATH_ROLES } from '../app.routes';
 import { MatMenuModule } from '@angular/material/menu';
 import { EmsServiceService } from '../services/ems-service.service';
+import { AuthService } from '../auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { A11yModule } from "@angular/cdk/a11y";
 
 @Component({
   selector: 'app-header',
@@ -21,13 +24,17 @@ import { EmsServiceService } from '../services/ems-service.service';
     MatIconModule,
     MatTabsModule,
     MatMenuModule,
-  ],
+    CommonModule,
+    A11yModule
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
   constructor(private readonly router: Router,
-    private readonly ems : EmsServiceService
+    readonly ems : EmsServiceService,
+    readonly authService:AuthService,
+    private readonly snackBar:MatSnackBar
   ) {}
   ngOnInit(): void {
   }
@@ -38,7 +45,6 @@ export class HeaderComponent implements OnInit {
     { label: 'Attendance', path: PATH_EMPLOYEE_ATTENDANCE },
     { label: 'Payroll', path: PATH_PAYROLL },
     { label: 'Masters', path: PATH_MASTERS },
-    { label: 'Settings', path:''  },
   ];
 
   
@@ -62,4 +68,19 @@ export class HeaderComponent implements OnInit {
   //     console.log(val);
   //   })
   // }
+
+  onLogoutClick(){
+    this.authService.logout();
+    this.snackBar.open('Logout Successfully', 'close', {duration:3000});
+    this.router.navigate([PATH_LOGIN]);
+  }
+
+  onClickRoles(){
+    this.router.navigate([PATH_ROLES]);
+  }
+
+  signal1 = signal(1);
+  signal2 = signal(2);
+
+  finalString = computed(() => this.signal1() !== this.signal2());
 }

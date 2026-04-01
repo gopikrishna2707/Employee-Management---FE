@@ -1,21 +1,48 @@
-
-<mat-toolbar>
+<ng-container>
+  <mat-toolbar>
     <!-- Start items -->
     <button mat-icon-button aria-label="Menu">
-        <mat-icon>menu</mat-icon>
+      <mat-icon>menu</mat-icon>
     </button>
     <button mat-button>TEMA</button>
 
-    <button mat-button class="btns" *ngFor="let b of dashBoard" (click)="navClick(b)">{{b.label}}</button>
+    <ng-container *ngIf="authService.isUserLoggedInSubject.value">
+      <button
+        mat-button
+        class="btns"
+        *ngFor="let b of dashBoard"
+        (click)="navClick(b)"
+      >
+        {{ b.label }}
+      </button>
+
+      <button mat-button class="btns" [mat-menu-trigger-for]="settingMenu">
+        Settings
+      </button>
+    </ng-container>
+
+    <mat-menu #settingMenu="matMenu">
+      <button mat-menu-item (click)="onClickRoles()">Roles</button>
+    </mat-menu>
 
     <!-- Spacer pushes everything else to the end -->
     <span class="spacer"></span>
-    
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>person</mat-icon>
+
+    <div class="font-bold font-small">
+      {{ authService.userDetails.username }}
+    </div>
+
+    <button
+      *ngIf="authService.isUserLoggedInSubject.value"
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon>person</mat-icon>
     </button>
+
     <mat-menu #menu="matMenu">
-        <button mat-menu-item>Logout</button>
-        <button mat-menu-item>Details</button>
+      <button mat-menu-item (click)="onLogoutClick()">Logout</button>
+      <button mat-menu-item>Details</button>
     </mat-menu>
-</mat-toolbar>
+  </mat-toolbar>
+</ng-container>

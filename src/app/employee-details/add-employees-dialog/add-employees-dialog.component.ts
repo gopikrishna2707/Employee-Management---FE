@@ -11,9 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { EmsServiceService } from '../../services/ems-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { PATH_EMPLOYEE } from '../../app.routes';
 
 @Component({
   selector: 'app-add-employees-dialog',
@@ -37,7 +38,8 @@ export class AddEmployeesDialogComponent implements OnInit {
   constructor(
     private readonly emsService: EmsServiceService,
     private readonly snackBar: MatSnackBar,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -96,6 +98,7 @@ export class AddEmployeesDialogComponent implements OnInit {
         this.snackBar.open('successfully added', 'close', { duration: 3000 });
         this.addFormControl.reset();
         this.isSpin = false;
+        this.router.navigate([PATH_EMPLOYEE]);
       },
       error: (err: any) => {
         console.log(err);
@@ -183,6 +186,7 @@ export class AddEmployeesDialogComponent implements OnInit {
         this.snackBar.open('Updated succesfully', 'close', {duration:3000});
         this.isSpin = false;
         this.addFormControl.markAsPristine();
+        this.router.navigate([PATH_EMPLOYEE]);
       },
       error:(err) => {
         const errMsg = err.error?.error || 'Something went wrong!';

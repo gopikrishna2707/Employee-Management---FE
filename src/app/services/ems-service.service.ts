@@ -5,7 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment.prod';
 import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
 import { loginObj } from '../auth/login-page/login-page.component';
-import { DataApi } from '../mock-data';
+import { BASIC_ATTENDANCE, DataApi } from '../mock-data';
+import { LoginResponse } from '../models/LoginResponse';
 
 
 @Injectable({
@@ -31,7 +32,6 @@ export class EmsServiceService {
   state2$ = new BehaviorSubject<any>('');
 
   isLoading = signal(false);
-
 
   getEmployees(): Observable<any> {
     return this.http.get<any>(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
@@ -144,13 +144,13 @@ export class EmsServiceService {
     console.log("view child");
   }
 
-  userWithToken(formData: loginObj): Observable<any> {
-    return this.http.post<any>('https://dummyjson.com/auth/login', formData).pipe(
-      map((res: any) => {
-        return res;
-      })
-    )
-  }
+  // userWithToken(formData: loginObj): Observable<any> {
+  //   return this.http.post<any>('https://dummyjson.com/auth/login', formData).pipe(
+  //     map((res: any) => {
+  //       return res;
+  //     })
+  //   )
+  // }
 
 
   getDetails(): Observable<DataApi[]> {
@@ -191,5 +191,22 @@ export class EmsServiceService {
       }))
     ))
    )
+  }
+
+  getAttendanceById(id:string):Observable<any>{
+    // return this.http.get<any>(`${EmsServiceService.BASE_URL}/employee/${id}`).pipe(
+    //   map((res:any) => {
+    //     return res;
+    //   })
+    // )
+    return of(BASIC_ATTENDANCE);
+  }
+
+  getAllUserRolesandPermissions():Observable<any>{
+    return this.http.get<any>(`${EmsServiceService.BASE_URL}/user-details`).pipe(
+      map(res => {
+        return res;
+      })
+    )
   }
 }

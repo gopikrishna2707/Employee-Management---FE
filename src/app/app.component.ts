@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { HeaderComponent } from "./header/header.component";
 import { HttpClientModule } from '@angular/common/http';
 import { LoginPageComponent } from "./auth/login-page/login-page.component";
+import { EmsServiceService } from './services/ems-service.service';
 
 @Component({
   selector: 'app-root',
@@ -19,4 +20,10 @@ import { LoginPageComponent } from "./auth/login-page/login-page.component";
 })
 export class AppComponent {
   title = 'EmployeManagement-FE';
+
+  constructor(public emsService:EmsServiceService){
+
+  }
+  showHeader(){
+  }
 }

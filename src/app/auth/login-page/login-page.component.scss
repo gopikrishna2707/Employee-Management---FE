@@ -1,0 +1,34 @@
+.background-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url('/assets/img.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  filter: blur(4px);
+  z-index: -1; /* Keeps background behind card */
+}
+
+.page-container {
+  height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 50px;
+  position: relative;
+  z-index: 1; /* Makes card visible above blur */
+}
+
+mat-card {
+  position: relative;
+  padding: 30px;
+  width: 400px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+}
