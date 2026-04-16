@@ -3,6 +3,7 @@ mat-toolbar {
   display: flex;
   background-color: #1D4471;
   color: white;
+  align-items: center;
 }
 
 .spacer {
@@ -16,3 +17,4 @@ mat-toolbar {
 .mat-mdc-button {
   color: white !important;
 }
+

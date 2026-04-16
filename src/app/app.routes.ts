@@ -7,9 +7,10 @@ import { AttendanceDetailsComponent } from './attendance-details/attendance-deta
 import { PayrollComponent } from './payroll/payroll.component';
 import { MastersComponent } from './masters/masters.component';
 import { LoginPageComponent } from './auth/login-page/login-page.component';
-import { RolesComponent } from './auth/roles/roles.component';
 import { authInterceptor } from './auth/interceptor';
 import { authGuard } from './auth/authGuard';
+import { RolesComponent } from './auth/roles/roles.component';
+
 
 export const BASIC_PATH: string = 'v1/api';
 
@@ -23,6 +24,8 @@ export const PATH_HOME: string = `${BASIC_PATH}/Home`;
 export const PATH_PAYROLL: string = `${BASIC_PATH}/employee/payroll`;
 export const PATH_MASTERS: string = `${BASIC_PATH}/employee/masters`;
 export const PATH_ROLES: string = `${BASIC_PATH}/employee/roles`;
+export const PATH_SETTINGS:string = `${BASIC_PATH}/settings`
+export const PATH_PROFILE:string = `${BASIC_PATH}/profile`
 
 export const routes: Routes = [
   { path: '', redirectTo: PATH_LOGIN, pathMatch: 'full' },

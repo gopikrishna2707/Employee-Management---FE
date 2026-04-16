@@ -6,13 +6,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButton } from "@angular/material/button";
 import { EmsServiceService } from '../../services/ems-service.service';
 import { Route, Router } from '@angular/router';
-import { PATH_EMPLOYEE, PATH_HOME } from '../../app.routes';
+import { PATH_EMPLOYEE, PATH_HOME, PATH_LOGIN } from '../../app.routes';
 import { MatSelect, MatOption } from "@angular/material/select";
 import { MatCard } from "@angular/material/card";
 import { Role } from '../../models/Employee';
 import { AuthService } from '../auth.service';
 import { LoginResponse } from '../../models/LoginResponse';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { UserRoles } from '../../models/UserRoles';
 
 export interface loginObj{
     username:string,
@@ -31,79 +33,87 @@ export interface loginObj{
     MatButton,
     MatSelect,
     MatOption,
-    MatCard
+    MatCard,
+    MatTabsModule
 ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
 })
 export class LoginPageComponent implements OnInit {
 
+  loginForm!: FormGroup;
+
+  signUpForm!:FormGroup;
+
+  toggleForm = false;
+
+  userRoles = [
+    { role: UserRoles.ROLE_ADMIN},
+    { role: UserRoles.ROLE_EMPLOYEE},
+    { role: UserRoles.ROLE_MANAGER}
+  ];
+
   constructor(
     private readonly fb: FormBuilder,
-    private readonly emsSer:EmsServiceService,
-    private readonly router:Router,
-    private readonly authService:AuthService,
-    private readonly snackBar:MatSnackBar
-  ) { }
+    private readonly router: Router,
+    private readonly authService: AuthService,
+    private readonly snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.formInitialize();
-    console.log(this.authService.isUserLoggedInSubject.value);
+    if (this.authService.isLoggedIn$) {
+      this.router.navigate([PATH_HOME]);
+    }
   }
-
-  loginForm!: FormGroup;
 
   formInitialize() {
     this.loginForm = this.fb.group({
-      email:['', Validators.email],
       username: ['', Validators.required],
       password: ['', Validators.required],
-      roleSelection:['', Validators.required]
+    });
+    this.signUpForm = this.fb.group({
+      email:['', Validators.required],
+      userNameSignup:['', Validators.required],
+      roles:['', Validators.required],
+      passwordSignup:['', Validators.required]
     })
   }
 
-  toggleForm:boolean = false;
+  onSignupClick() {
+    const {email,userNameSignup:username,passwordSignup:password, roles} = this.signUpForm.getRawValue();
 
-  userRoles = [
-    {role:Role.ADMIN, value:'Admin'},
-    {role:Role.MANAGER, value:'Manager'},
-    {role: Role.EMPLOYEE, value:'Employee'}
-  ];
-
-  // setFalse(){
-  //   this.emsSer.isLoggedInSubject.next(false);
-  // }
-
-  onSignupClick(){
-    this.toggleForm = !this.toggleForm;
-  }
-
-  username:string = '';
-
-  password:string = '';
-
-  userDetails:LoginResponse = {
-    uid: '',
-    username: '',
-    email: '',
-    jwt: ''
-  };
-
-  onSubmit(){
-    // // this.emsSer.isLoggedInSubject.next(true);
-    this.username = this.loginForm.get('username')?.value;
-    this.password = this.loginForm.get('password')?.value;
-
-    this.authService.loginUser(this.username, this.password).subscribe({
-      next:(res:LoginResponse) => {
-        this.snackBar.open('Successfull Loggedin','close',{duration:3000});
-        this.authService.saveToken(res.jwt);
-        this.router.navigate([PATH_HOME]);
+    this.authService.sighupUser(email,username,password,roles).subscribe({
+      next:(res) => {
+        console.log(res);
+        this.router.navigate([PATH_LOGIN]);
       },
       error:(err) => {
-        console.log(err.error);
-        this.snackBar.open('invalid username or passsword','close',{duration:3000});
+        console.log(err);
       }
     })
+  }
+
+  onSubmit() {
+
+    // if (this.loginForm.invalid) return;
+    const { username, password } = this.loginForm.value;
+    console.log('login clicked');
+
+    this.authService.loginUser(username, password).subscribe({
+      next: () => {
+        this.snackBar.open('Successfully logged in', 'Close', {
+          duration: 3000
+        });
+        this.router.navigate([PATH_HOME]);
+      },
+      error: () => {
+        this.snackBar.open(
+          'Invalid username or password',
+          'Close',
+          { duration: 3000 }
+        );
+      }
+    });
   }
 }

@@ -3,15 +3,31 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import { PATH_ADD_EMPLOYEE, PATH_EMPLOYEE, PATH_EMPLOYEE_ATTENDANCE, PATH_HOME, PATH_LOGIN, PATH_MASTERS, PATH_PAYROLL, PATH_ROLES } from '../app.routes';
+import {
+  PATH_ADD_EMPLOYEE,
+  PATH_EMPLOYEE,
+  PATH_EMPLOYEE_ATTENDANCE,
+  PATH_HOME,
+  PATH_LOGIN,
+  PATH_MASTERS,
+  PATH_PAYROLL,
+  PATH_PROFILE,
+  PATH_ROLES,
+  PATH_SETTINGS,
+} from '../app.routes';
 import { MatMenuModule } from '@angular/material/menu';
 import { EmsServiceService } from '../services/ems-service.service';
 import { AuthService } from '../auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { A11yModule } from "@angular/cdk/a11y";
+import { A11yModule } from '@angular/cdk/a11y';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { UserDetails } from '../models/UserDetails';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { take } from 'rxjs';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-header',
@@ -25,19 +41,27 @@ import { A11yModule } from "@angular/cdk/a11y";
     MatTabsModule,
     MatMenuModule,
     CommonModule,
-    A11yModule
-],
+    A11yModule,
+    MatProgressSpinner,
+    MatTabsModule,
+    MatButtonToggleModule,
+    MatButtonModule
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-  constructor(private readonly router: Router,
-    readonly ems : EmsServiceService,
-    readonly authService:AuthService,
-    private readonly snackBar:MatSnackBar
+  constructor(
+    private readonly router: Router,
+    readonly ems: EmsServiceService,
+    readonly authService: AuthService,
+    private readonly snackBar: MatSnackBar,
+    private dialog: MatDialog,
   ) {}
-  ngOnInit(): void {
-  }
+
+  userDetails$ = this.authService.userDetails$;
+
+  ngOnInit(): void {}
 
   dashBoard: any[] = [
     { label: 'Dashboard', path: PATH_HOME },
@@ -47,7 +71,6 @@ export class HeaderComponent implements OnInit {
     { label: 'Masters', path: PATH_MASTERS },
   ];
 
-  
   navClick(item: any) {
     this.router.navigate([item.path]);
   }
@@ -57,26 +80,18 @@ export class HeaderComponent implements OnInit {
     this.router.navigate([PATH_ADD_EMPLOYEE]);
   }
 
-  // readValues(){
-  //   this.ems.state1$.subscribe(val => {
-  //     debugger
-  //     console.log(val);
-  //   })
-
-  //   this.ems.state2$.subscribe(val => {
-  //     debugger
-  //     console.log(val);
-  //   })
-  // }
-
-  onLogoutClick(){
+  onLogoutClick() {
     this.authService.logout();
-    this.snackBar.open('Logout Successfully', 'close', {duration:3000});
+    this.snackBar.open('Logout Successfully', 'close', { duration: 3000 });
     this.router.navigate([PATH_LOGIN]);
   }
 
-  onClickRoles(){
+  onClickRoles() {
     this.router.navigate([PATH_ROLES]);
+  }
+
+  onProfileClick() {
+    this.router.navigate([PATH_PROFILE]);
   }
 
   signal1 = signal(1);

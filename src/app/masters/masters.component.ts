@@ -17,7 +17,7 @@ import { EmsServiceService } from '../services/ems-service.service';
 @Component({
   selector: 'app-masters',
   standalone: true,
-  imports: [MatButton, MatIcon, MatFormFieldModule, CommonModule, MatOption, FormsModule, ReactiveFormsModule, MatInput, MatAutocompleteModule, MatProgressSpinnerModule],
+  imports: [ MatFormFieldModule, CommonModule, FormsModule, ReactiveFormsModule, MatAutocompleteModule, MatProgressSpinnerModule],
   templateUrl: './masters.component.html',
   styleUrl: './masters.component.scss'
 })

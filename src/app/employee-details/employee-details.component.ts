@@ -35,6 +35,7 @@ import {
 } from 'rxjs';
 import { BASIC_MOCK } from '../mock-data';
 import { AuthService } from '../auth/auth.service';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-employee-details',
@@ -53,6 +54,7 @@ import { AuthService } from '../auth/auth.service';
     MatInputModule,
     MatSortHeader,
     MatSortModule,
+    NgxSkeletonLoaderModule
 ],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
@@ -105,13 +107,18 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
 
   showData:boolean = false;
 
+  isLoading:boolean = false;
+
   getEmployees(){
+    this.isLoading = true;
     this.emsService.getEmployees().subscribe({
       next:(res) => {
         this.dataSource.data = res;
+        this.isLoading = false;
       },
       error:(err) => {
         this.snackBar.open('No data found', 'close', {duration :3000, panelClass:['snackbar-error']})
+        this.isLoading = false;
       }
     })
   }
@@ -253,4 +260,5 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   trackById(index:number, column:any){
     return column.id;
   }
+  isAdmin$ = this.authService.isAdmin$;
 }

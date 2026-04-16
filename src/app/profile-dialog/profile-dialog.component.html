@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>User Profile</h2>
+
+<mat-dialog-content class="dialog-content">
+  <mat-list>
+    <mat-list-item>
+      <mat-icon matListIcon>person</mat-icon>
+      {{ profileData.username }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListIcon>email</mat-icon>
+      {{ profileData.email }}
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListIcon>security</mat-icon>
+      <mat-chip-set>
+        <mat-chip *ngFor="let role of profileData.roles" color="primary" selected>
+          {{ role }}
+        </mat-chip>
+      </mat-chip-set>
+    </mat-list-item>
+
+    <!-- More fields -->
+  </mat-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

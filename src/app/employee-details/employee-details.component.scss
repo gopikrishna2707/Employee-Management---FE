@@ -17,6 +17,29 @@
   gap: 16px; /* adds gap between input and button */
 }
 
-.form-feild {
-  flex: 1; /* input takes full width */
+// .form-feild {
+//   flex: 1; 
+//   height: 100px;/* input takes full width */
+// }
+
+:root {
+  --control-height: 56px; /* Angular Material outline height */
 }
+
+// .form-container {
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   gap: 12px;
+// }
+
+.form-field {
+  width: 260px;
+}
+
+// /* Button height aligned manually */
+// .form-button {
+//   height: var(--control-height);
+//   display: inline-flex;
+//   align-items: center;
+// }

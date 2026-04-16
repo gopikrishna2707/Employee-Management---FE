@@ -1,48 +1,35 @@
-<ng-container>
-  <mat-toolbar>
-    <!-- Start items -->
-    <button mat-icon-button aria-label="Menu">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <button mat-button>TEMA</button>
+<mat-toolbar *ngIf="authService.isLoggedIn$ | async">
+  <!-- Start items -->
+  <button mat-icon-button aria-label="Menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <button mat-button>TEMA</button>
 
-    <ng-container *ngIf="authService.isUserLoggedInSubject.value">
-      <button
-        mat-button
-        class="btns"
-        *ngFor="let b of dashBoard"
-        (click)="navClick(b)"
-      >
-        {{ b.label }}
-      </button>
+  <button mat-button *ngFor="let b of dashBoard" (click)="navClick(b)">
+    {{b.label}}
+  </button>
 
-      <button mat-button class="btns" [mat-menu-trigger-for]="settingMenu">
-        Settings
-      </button>
-    </ng-container>
+  <button mat-button class="btns" [mat-menu-trigger-for]="settingMenu">
+    Settings
+  </button>
 
-    <mat-menu #settingMenu="matMenu">
-      <button mat-menu-item (click)="onClickRoles()">Roles</button>
-    </mat-menu>
+  <mat-menu #settingMenu="matMenu">
+    <button mat-menu-item (click)="onClickRoles()">Roles</button>
+  </mat-menu>
 
-    <!-- Spacer pushes everything else to the end -->
-    <span class="spacer"></span>
+  <!-- Spacer pushes everything else to the end -->
+  <span class="spacer"></span>
 
-    <div class="font-bold font-small">
-      {{ authService.userDetails.username }}
-    </div>
+  <ng-container *ngIf="userDetails$ | async as user">
+    {{ user.username }}
+  </ng-container>
 
-    <button
-      *ngIf="authService.isUserLoggedInSubject.value"
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-    >
-      <mat-icon>person</mat-icon>
-    </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>person</mat-icon>
+  </button>
 
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="onLogoutClick()">Logout</button>
-      <button mat-menu-item>Details</button>
-    </mat-menu>
-  </mat-toolbar>
-</ng-container>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onLogoutClick()">Logout</button>
+    <button mat-menu-item (click)="onProfileClick()">Details</button>
+  </mat-menu>
+</mat-toolbar>

@@ -1,0 +1,21 @@
+.user-card {
+  width: 700px;
+  margin: 20px auto;
+}
+
+.avatar {
+  background-color: #1d4471;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.value {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+mat-chip {
+  margin-right: 6px;
+}

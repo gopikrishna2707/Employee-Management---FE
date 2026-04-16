@@ -377,13 +377,27 @@ export const BASIC_MOCK = [
   },
 ];
 
+export interface AttendanceRecord {
+  date: string;
+  check_in: string | null;
+  check_out: string | null;
+  total_hours: number;
+  status: 'PRESENT' | 'ABSENT' | 'HALF_DAY' | 'HOLIDAY';
+}
+
+export interface AttendanceResponse {
+  id: string;
+  month: string;
+  year: number;
+  total_working_days: number;
+  current_working_days: number;
+  records: AttendanceRecord[];
+}
+
 export const BASIC_ATTENDANCE = {
   id: 'EMP001',
   month: 'March',
   year: 2026,
-  total_working_days: 20,
-  current_working_days: 10,
-
   records: [
     {
       date: '2026-03-01',
@@ -405,27 +419,6 @@ export const BASIC_ATTENDANCE = {
       check_out: '13:00',
       total_hours: 3.5,
       status: 'HALF_DAY'
-    },
-    {
-      date: '2026-03-04',
-      check_in: '09:00',
-      check_out: '17:55',
-      total_hours: 7.9,
-      status: 'PRESENT'
-    },
-    {
-      date: '2026-03-05',
-      check_in: null,
-      check_out: null,
-      total_hours: 0,
-      status: 'HOLIDAY'
-    },
-    {
-      date: '2026-03-06',
-      check_in: '09:15',
-      check_out: '18:20',
-      total_hours: 9.0,
-      status: 'PRESENT'
     }
   ]
 };

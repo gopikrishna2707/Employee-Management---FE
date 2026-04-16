@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable, signal, ViewChild } from '@angular/core';
 import { BehaviorSubject, catchError, debounceTime, delay, forkJoin, from, interval, map, mergeMap, Observable, of, shareReplay, Subject, switchMap, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -35,10 +35,10 @@ export class EmsServiceService {
 
   getEmployees(): Observable<any> {
     return this.http.get<any>(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
-      shareReplay(1),
+      // shareReplay(1),
       map((res: any) => {
         return res;
-      })
+      }),
     )
   }
 
@@ -132,8 +132,9 @@ export class EmsServiceService {
   }
 
   searchEmployee(value: string): Observable<any> {
+    const params = new HttpParams().set('query', value)
     return this.http
-      .get<any>(`${EmsServiceService.BASE_URL}/employees/search/basic/${value}`).pipe(
+      .get<any>(`${EmsServiceService.BASE_URL}/employees/search/basic`,{params}).pipe(
         map((res: any) => {
           return res;
         })
@@ -203,7 +204,7 @@ export class EmsServiceService {
   }
 
   getAllUserRolesandPermissions():Observable<any>{
-    return this.http.get<any>(`${EmsServiceService.BASE_URL}/user-details`).pipe(
+    return this.http.get<any>(`${EmsServiceService.BASE_URL}/users`).pipe(
       map(res => {
         return res;
       })

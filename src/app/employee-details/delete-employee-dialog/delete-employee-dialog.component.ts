@@ -24,4 +24,7 @@ export class DeleteEmployeeDialogComponent {
   onAccept(){
     this.dialogRef.close(true);
   }
+  onCancel(){
+    this.dialogRef.close(false);
+  }
 }

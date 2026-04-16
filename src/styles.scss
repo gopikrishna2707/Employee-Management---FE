@@ -174,3 +174,25 @@ ALIGNMENT
 .gap-10{
   gap :10px
 }
+/* TAB TEXT COLOR */
+.mat-mdc-tab .mdc-tab__text-label {
+  color: white !important;
+}
+
+/* ACTIVE TAB TEXT */
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: white !important;
+  font-weight: 500;
+}
+
+/* TAB UNDERLINE (INK BAR) */
+.mat-mdc-tab-group
+.mdc-tab-indicator__content--underline {
+  border-color: white !important;
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* prevents jump */
+}

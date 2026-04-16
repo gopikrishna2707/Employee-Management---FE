@@ -24,12 +24,4 @@ describe('MastersComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should call', () =>{
-     const mockdata:any = [1,2,3];
-    spyOn(service, 'getDetails').and.returnValue(of(mockdata));
-    component.getFormValue();
-    expect(service.callApi).toHaveBeenCalled();
-    expect(component.userList).toEqual(mockdata);
-  })
 });

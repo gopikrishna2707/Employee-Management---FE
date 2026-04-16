@@ -1,34 +1,68 @@
+/* Background */
 .background-layer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-
-  background-image: url('/assets/img.png'); 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
+  inset: 0;
+  background: url('/assets/img.png') center / cover no-repeat;
   filter: blur(4px);
-  z-index: -1; /* Keeps background behind card */
+  z-index: -1;
 }
 
+/* Page center */
 .page-container {
-  height: 85vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-right: 50px;
-  position: relative;
-  z-index: 1; /* Makes card visible above blur */
 }
 
-mat-card {
-  position: relative;
-  padding: 30px;
-  width: 400px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(5px);
-  border-radius: 10px;
+/* Auth Card */
+.auth-card {
+  width: 420px;               /* ✅ slightly wider */
+  height: 480px;              /* ✅ fixed height */
+  padding: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+}
+
+/* Tabs take full height */
+.auth-tabs {
+  height: 100%;
+}
+
+/* ✅ Tab body spacing & centering */
+.tab-body {
+  height: calc(100% - 48px);  /* ✅ reserve space after tab header */
+  padding: 32px;
+  display: flex;
+  justify-content: center;   /* ✅ center horizontally */
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+/* ✅ Form width + alignment */
+.auth-form {
+  width: 100%;
+  max-width: 320px;          /* ✅ prevents left stuck layout */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ✅ Make inputs full width */
+.auth-form mat-form-field {
+  width: 100%;
+}
+
+/* ✅ Full-width buttons */
+.auth-form button {
+  width: 100%;
+}
+
+/* ❌ Kill Material internal scroll */
+:host ::ng-deep .mat-tab-body-wrapper,
+:host ::ng-deep .mat-tab-body,
+:host ::ng-deep .mat-tab-body-content {
+  height: 100%;
+  overflow: hidden !important;
 }

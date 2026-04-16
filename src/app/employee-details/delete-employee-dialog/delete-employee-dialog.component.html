@@ -4,7 +4,7 @@
   <span>Are you sure you want to delete <span class="font-bold">{{data.name}}</span></span>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>No</button>
+  <button mat-button [mat-dialog-close]="false">No</button>
   <button mat-raised-button color="warn" [mat-dialog-close]="true">Yes</button>
 </mat-dialog-actions>
 

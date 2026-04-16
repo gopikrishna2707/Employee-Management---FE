@@ -1,38 +1,61 @@
+<div class="background-layer"></div>
+
 <div class="page-container">
-  <mat-card>
-    <form [formGroup]="loginForm" class="flex-direction">
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput type="text" formControlName="username" />
-      </mat-form-field>
+  <mat-card class="auth-card">
+    <mat-tab-group class="auth-tabs" animationDuration="0ms">
+      <!-- LOGIN -->
+      <mat-tab label="Login">
+        <div class="tab-body">
+          <form class="auth-form" [formGroup]="loginForm">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="username" />
+            </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" />
-      </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password" />
+            </mat-form-field>
 
-      <ng-container *ngIf="toggleForm">
-        <mat-form-field>
-          <mat-label>Select the role</mat-label>
-          <mat-select formControlName="roleSelection">
-            <mat-option *ngFor="let roles of userRoles" [value]="roles.role">
-              {{ roles.value }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </ng-container>
+            <button mat-flat-button color="primary" (click)="onSubmit()">
+              Login
+            </button>
+          </form>
+        </div>
+      </mat-tab>
 
-      <div class="justify-between">
-        <button *ngIf="toggleForm" (click)="onSignupClick()" mat-flat-button>
-          Login
-        </button>
-        <button *ngIf="!toggleForm" () mat-flat-button (click)="onSignupClick()">
-          Sign-up
-        </button>
-        <button class="mat-primary" mat-stroked-button (click)="onSubmit()">
-          Submit
-        </button>
-      </div>
-    </form>
+      <!-- SIGN UP -->
+      <mat-tab label="Sign-up">
+        <div class="tab-body">
+          <form class="auth-form" [formGroup]="signUpForm">
+            <mat-form-field appearance="outline">
+              <mat-label>email</mat-label>
+              <input matInput  formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <input matInput  formControlName="userNameSignup" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="passwordSignup" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="roles" multiple>
+                <mat-option *ngFor="let item of userRoles" [value]="item.role">{{item.role}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button mat-flat-button (click)="onSignupClick()" color="primary">
+              Sign Up
+            </button>
+          </form>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </mat-card>
 </div>
