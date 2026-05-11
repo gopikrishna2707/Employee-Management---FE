@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmsServiceService } from '../services/ems-service.service';
+import { UserRoles } from '../models/UserRoles';
 
 
 @Component({

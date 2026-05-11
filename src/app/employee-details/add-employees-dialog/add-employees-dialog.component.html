@@ -1,8 +1,11 @@
 <mat-card class="content-margin">
   <mat-card-header class="margin-large-bottom">
-    <span class="font-large">{{
-      isEditMode ? "Edit employee" : "Add new employee"
-      }}</span>
+    <span class="font-large">
+      <button mat-icon-button (click)="returnToList()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      {{ isEditMode ? "Edit employee" : "Add new employee" }}</span
+    >
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="addFormControl" (ngSubmit)="saveForm()">
@@ -78,18 +81,18 @@
         <input matInput formControlName="personalForm" />
       </mat-form-field>
     </form>
-    <div class="button-container">
-      <ng-container *ngIf="!isEditMode; else updateForm">
-        <button class="btn-cls" mat-stroked-button [disabled]="!addFormControl.dirty" (click)="saveForm()">
-          Submit
-        </button>
-      </ng-container>
-      <ng-template #updateForm>
-        <button class="btn-cls" mat-stroked-button [disabled]="!addFormControl.dirty" (click)="updateFormDetails()">
-          Update
-        </button>
-      </ng-template>
+
+    <div class="button-container" *hasAccess="userRoles.ROLE_ADMIN">
+      <button
+        class="btn-cls"
+        mat-stroked-button
+        [disabled]="!addFormControl.dirty"
+        (click)="isEditMode ? updateFormDetails() : saveForm()"
+      >
+        {{ isEditMode ? "Update" : "Submit" }}
+      </button>
     </div>
+
     <div class="overlay" *ngIf="isSpin">
       <div class="spinner"></div>
     </div>

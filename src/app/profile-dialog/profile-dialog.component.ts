@@ -13,17 +13,17 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatListModule } from "@angular/material/list";
 import { MatIcon } from "@angular/material/icon";
 
-export interface DialogData {
-  id: number;
-  uid: string;
-  email:string
-  username: string;
-  roles: Role[];
-  accountExpired: boolean;
-  accountNonLocked: boolean;
-  credentialsExpired: boolean;
-  active: boolean;
-}
+// export interface DialogData {
+//   id: number;
+//   uid: string;
+//   email:string
+//   username: string;
+//   roles: Role[];
+//   accountExpired: boolean;
+//   accountNonLocked: boolean;
+//   credentialsExpired: boolean;
+//   active: boolean;
+// }
 
 @Component({
   selector: 'app-profile-dialog',
@@ -32,27 +32,27 @@ export interface DialogData {
   templateUrl: './profile-dialog.component.html',
   styleUrl: './profile-dialog.component.scss',
 })
-export class ProfileDialogComponent implements OnInit {
-  profileData: DialogData;
+export class ProfileDialogComponent {
+  // profileData: DialogData;
 
-  profileKeyValues: { label: string; value: any }[] = [];
+  // profileKeyValues: { label: string; value: any }[] = [];
 
-  constructor(
-    public dialogRef: MatDialogRef<ProfileDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data: DialogData,
-  ) {
-    this.profileData = data;
-  }
+  // constructor(
+  //   public dialogRef: MatDialogRef<ProfileDialogComponent>,
+  //   @Inject(MAT_DIALOG_DATA) data: DialogData,
+  // ) {
+  //   this.profileData = data;
+  // }
 
-  ngOnInit(): void {
+  // ngOnInit(): void {
 
-  }
+  // }
 
-  onCancel() {
-    this.dialogRef.close(false);
-  }
+  // onCancel() {
+  //   this.dialogRef.close(false);
+  // }
 
-  onSubmit() {
-    this.dialogRef.close(true);
-  }
+  // onSubmit() {
+  //   this.dialogRef.close(true);
+  // }
 }

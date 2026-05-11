@@ -13,19 +13,21 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Search employee</mat-label>
           <mat-icon matPrefix>search</mat-icon>
-          <input matInput type="text" (input)="onSearch($event)" />
+          <input matInput type="text" [formControl]="searchFormControl" />
         </mat-form-field>
       </ng-template>
-      <ng-container *ngIf="isLoading; else button">
+      <div *hasAccess="userRoles.ROLE_ADMIN">
+        <ng-container *ngIf="isLoading; else button">
         <ngx-skeleton-loader
           animation="progress-dark"
           count="1"
           [theme]="{ height: '40px', width: '10vw' }"
         ></ngx-skeleton-loader>
       </ng-container>
+      </div>
       <ng-template #button>
         <button
-        *ngIf="isAdmin$ |async"
+        *hasAccess="userRoles.ROLE_ADMIN"
           mat-stroked-button
           [disabled]="isLoading"
           (click)="redirectTo()"
@@ -35,58 +37,65 @@
       </ng-template>
     </div>
     <ng-container *ngIf="!isLoading; else loader">
-      <div>
-        <table
-          mat-table
-          matSort
-          [dataSource]="dataSource"
-          [trackBy]="trackById"
-          class="mat-elevation-z1"
-        >
-          <ng-container
-            *ngFor="let column of columnsToDisplay; let i = index"
-            [matColumnDef]="column"
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            [trackBy]="trackById"
+            matSort
+            class="mat-elevation-z1"
           >
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              [mat-sort-header]="columnsToDataMapping[column]"
+            <ng-container
+              *ngFor="let column of columnsToDisplay; let i = index"
+              [matColumnDef]="column"
             >
-              {{ column }}
-            </th>
-            <td mat-cell *matCellDef="let element">
-              {{ element[columnsToDataMapping[column]] }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="editDetails">
-            <th mat-header-cell *matHeaderCellDef>Edit details</th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-button (click)="clickOnEditDetails(element.eid)">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button (click)="clickOnDeleteDetails(element)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithAction"></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: columnsToDisplayWithAction"
-          ></tr>
-          <tr
-            class="margin-small-top"
-            *matNoDataRow
-            [attr.colspan]="columnsToDisplayWithAction.length"
-          >
-            No Data Available
-          </tr>
-        </table>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                [mat-sort-header]="columnsToDataMapping[column]"
+              >
+                {{ column }}
+              </th>
+              <td mat-cell *matCellDef="let element">
+               <ng-container *ngIf="column === 'Working'">
+                 <app-circle-info [userInfo]="element.currentlyWorking"></app-circle-info>
+               </ng-container>
+               <ng-container *ngIf="column !== 'Working'">
+                {{ element[columnsToDataMapping[column]] }}
+               </ng-container>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="editDetails">
+              <th mat-header-cell *matHeaderCellDef>Details</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button (click)="clickOnEditDetails(element.eid)">
+                  <mat-icon>{{canEdit$? 'edit':'info'}}</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button (click)="clickOnDeleteDetails(element)" [disabled]="!canEdit$">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="columnsToDisplayWithAction"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: columnsToDisplayWithAction"
+            ></tr>
+            <tr
+              class="margin-small-top"
+              *matNoDataRow
+              [attr.colspan]="columnsToDisplayWithAction.length"
+            >
+              No Data Available
+            </tr>
+          </table>
         <mat-paginator
           #paginator
           showFirstLastButtons
@@ -94,7 +103,6 @@
           [pageSizeOptions]="[10, 50, 100]"
         >
         </mat-paginator>
-      </div>
     </ng-container>
     <ng-template #loader>
       <div>

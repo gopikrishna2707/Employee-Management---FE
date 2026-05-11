@@ -45,3 +45,14 @@ export function noSpaceError(
   return null;
 }
 
+export const Roles = {
+  ROLE_ADMIN:'ROLE_ADMIN',
+  ROLE_EMPLOYEE:'ROLE_EMPLOYEE',
+  ROLE_USER:'ROLE_USER'
+}
+
+export const StatusInfo = {
+  Yes:'yes',
+  No:'no'
+}
+

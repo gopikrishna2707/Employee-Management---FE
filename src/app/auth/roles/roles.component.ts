@@ -18,6 +18,7 @@ import { debounceTime, distinctUntilChanged, filter, take } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { UserDetails } from '../../models/UserDetails';
 import { UserRoles } from '../../models/UserRoles';
+import { HasAccessDirective } from "../../shared/directives/has-access.directive";
 
 @Component({
   selector: 'app-roles',
@@ -32,7 +33,8 @@ import { UserRoles } from '../../models/UserRoles';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-  ],
+    HasAccessDirective
+],
   templateUrl: './roles.component.html',
   styleUrl: './roles.component.scss',
 })
@@ -44,6 +46,8 @@ export class RolesComponent implements OnInit {
     this.getUserDetails();
     this.attachRolesofUser();
   }
+
+  userRoles = UserRoles;
 
   emsService = inject(EmsServiceService);
 
@@ -60,8 +64,6 @@ export class RolesComponent implements OnInit {
   searchControl = new FormControl('');
 
   loggedInDetails: UserDetails | null = null;
-
-  isAdmin$ = this.authService.isAdmin$;
 
   userForm = new FormGroup({
     selectedRoles: new FormControl<UserRoles[]>({ value: [], disabled: true }),
@@ -116,17 +118,17 @@ export class RolesComponent implements OnInit {
   }
 
   attachRolesofUser() {
-    const control = this.userForm.get('selectedRoles');
+    const roleControls = this.userForm.get('selectedRoles');
+    const permissionsControls = this.userForm.get('selectedPermissions');
+
     if (this.loggedInDetails?.roles.length) {
-      control?.patchValue(this.loggedInDetails?.roles);
+      roleControls?.patchValue(this.loggedInDetails?.roles);
     }
-    if (!this.loggedInDetails) {
-      control?.disable();
-      return;
+
+    if (this.loggedInDetails?.roles.includes(UserRoles.ROLE_ADMIN)) {
+      roleControls?.enable();
+      permissionsControls?.enable();
     }
-    // if (this.authService.hasRoleAdmin()) {
-    //   control?.enable();
-    // } 
     console.log(this.loggedInDetails);
   }
 }

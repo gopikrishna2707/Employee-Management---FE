@@ -26,7 +26,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserDetails } from '../models/UserDetails';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { take } from 'rxjs';
+import { take, timeout, timer } from 'rxjs';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @Component({
@@ -61,7 +61,13 @@ export class HeaderComponent implements OnInit {
 
   userDetails$ = this.authService.userDetails$;
 
-  ngOnInit(): void {}
+  private uid:any = '';
+
+  ngOnInit(): void {
+    this.userDetails$.subscribe((user) => {
+      this.uid = user?.uid;
+    })
+  }
 
   dashBoard: any[] = [
     { label: 'Dashboard', path: PATH_HOME },
@@ -91,7 +97,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onProfileClick() {
-    this.router.navigate([PATH_PROFILE]);
+    this.router.navigate([PATH_PROFILE,this.uid]);
   }
 
   signal1 = signal(1);

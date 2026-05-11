@@ -3,6 +3,7 @@ import { EmsServiceService } from '../services/ems-service.service';
 import {
   BehaviorSubject,
   Observable,
+  ReplaySubject,
   Subscription,
   map,
   shareReplay,
@@ -36,11 +37,19 @@ export class AuthService {
   //   shareReplay(1),
   // );
 
-  public isAdmin$ = this.userDetails$.pipe(
-    map((user) => user?.roles.includes(UserRoles.ROLE_ADMIN) ?? false),
-    tap((value) => console.log('isAdmin value:', value)), // Logs every time it changes
-    shareReplay(1)
-);
+  // public isAdmin$ = this.userDetails$.pipe(
+  //   map((user) => user?.roles.includes(UserRoles.ROLE_ADMIN) ?? false),
+  //   tap((value) => console.log('isAdmin value:', value)), // Logs every time it changes
+  //   shareReplay(1),
+  // );
+
+  //alternative to $isAdmin
+  readonly userPermissions: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+  userPermissions$ = this.userPermissions.asObservable();
+
+  setPermissions(permissions: string[]) {
+    this.userPermissions.next(permissions);
+  }
 
   constructor() {
     this.initializeAuth();
@@ -69,7 +78,7 @@ export class AuthService {
   }
 
   sighupUser(
-    email:string,
+    email: string,
     username: string,
     password: string,
     roles: string,
@@ -79,7 +88,7 @@ export class AuthService {
         email,
         username,
         password,
-        roles
+        roles,
       })
       .pipe(
         map((res) => {
@@ -104,7 +113,10 @@ export class AuthService {
     return this.http
       .get<UserDetails>(`${AuthService.BASE_URL}/auth/users/${uid}`)
       .pipe(
-        tap((user) => this.userDetails.next(user)),
+        tap(user => {
+          this.userDetails.next(user);
+          this.setPermissions(user.roles);
+        }),
         shareReplay(1),
       );
   }

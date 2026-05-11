@@ -8,13 +8,17 @@ import {
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { EmsServiceService } from '../../services/ems-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { PATH_EMPLOYEE } from '../../app.routes';
+import { MatIcon, MatIconModule } from "@angular/material/icon";
+import { AuthService } from '../../auth/auth.service';
+import { HasAccessDirective } from "../../shared/directives/has-access.directive";
+import { UserRoles } from '../../models/UserRoles';
 
 @Component({
   selector: 'app-add-employees-dialog',
@@ -30,7 +34,12 @@ import { PATH_EMPLOYEE } from '../../app.routes';
     MatButton,
     NgIf,
     MatProgressSpinnerModule,
-  ],
+    MatIcon,
+    MatIconButton,
+    MatIconModule,
+    CommonModule,
+    HasAccessDirective
+],
   templateUrl: './add-employees-dialog.component.html',
   styleUrl: './add-employees-dialog.component.scss',
 })
@@ -39,7 +48,8 @@ export class AddEmployeesDialogComponent implements OnInit {
     private readonly emsService: EmsServiceService,
     private readonly snackBar: MatSnackBar,
     private readonly route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private readonly authService:AuthService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +64,8 @@ export class AddEmployeesDialogComponent implements OnInit {
   isEditMode: boolean = false;
 
   employeeDetails: any[] = [];
+
+  userRoles = UserRoles;
 
   formInitialize(): void {
     this.addFormControl = new FormGroup({
@@ -194,5 +206,9 @@ export class AddEmployeesDialogComponent implements OnInit {
         this.snackBar.open(errMsg, 'Close', { duration: 3000 });
       }
     })
+  }
+
+  returnToList(){
+    this.router.navigate([PATH_EMPLOYEE]);
   }
 }

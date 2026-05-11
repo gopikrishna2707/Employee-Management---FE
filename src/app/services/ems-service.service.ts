@@ -35,7 +35,6 @@ export class EmsServiceService {
 
   getEmployees(): Observable<any> {
     return this.http.get<any>(`${EmsServiceService.BASE_URL}/employees/basic`).pipe(
-      // shareReplay(1),
       map((res: any) => {
         return res;
       }),
@@ -44,7 +43,6 @@ export class EmsServiceService {
 
   getEmployeesDetails(): Observable<any> {
     return this.http.get<any>(`${EmsServiceService.BASE_URL}/employees`).pipe(
-      delay(2000),
       map((res: any) => {
         return res;
       })
@@ -75,7 +73,7 @@ export class EmsServiceService {
     return this.http
       .post<any>(`${EmsServiceService.BASE_URL}/employees`, config)
       .pipe(
-        delay(2000),
+        delay(1000),
         tap((res: any) => {
           this.employeeDataCache.set([]);
           return res;

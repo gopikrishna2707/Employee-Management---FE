@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditEmployeeComponent } from './edit-employee.component';
+import { CircleInfoComponent } from './circle-info.component';
 
-describe('EditEmployeeComponent', () => {
-  let component: EditEmployeeComponent;
-  let fixture: ComponentFixture<EditEmployeeComponent>;
+describe('CircleInfoComponent', () => {
+  let component: CircleInfoComponent;
+  let fixture: ComponentFixture<CircleInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditEmployeeComponent]
+      imports: [CircleInfoComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(EditEmployeeComponent);
+    fixture = TestBed.createComponent(CircleInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

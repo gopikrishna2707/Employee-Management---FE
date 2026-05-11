@@ -62,8 +62,6 @@ export class AttendanceDetailsComponent implements OnInit {
 
   isLoading:boolean = false;
 
-  isAdmin$ = this.authService.isAdmin$;
-
   attendanceData: any[] = [];
 
   totalWorkingDays: number = 0;

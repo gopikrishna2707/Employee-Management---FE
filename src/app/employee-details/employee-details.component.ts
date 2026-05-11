@@ -18,24 +18,27 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ColumnMapping } from '../models/columnToDataMapping';
 import { EmsServiceService } from '../services/ems-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PATH_ADD_EMPLOYEE, PATH_EDIT_EMPLOYEE } from '../app.routes';
+import { PATH_ADD_EMPLOYEE, PATH_EMPLOYEE } from '../app.routes';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  Subject,
-} from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Subject, tap } from 'rxjs';
 import { BASIC_MOCK } from '../mock-data';
 import { AuthService } from '../auth/auth.service';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import {
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualScrollViewport,
+} from '@angular/cdk/scrolling';
+import { HasAccessDirective } from '../shared/directives/has-access.directive';
+import { UserRoles } from '../models/UserRoles';
+import { Roles } from '../constant';
+import { CircleInfoComponent } from "../shared/components/circle-info/circle-info.component";
 
 @Component({
   selector: 'app-employee-details',
@@ -54,11 +57,13 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatInputModule,
     MatSortHeader,
     MatSortModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    ReactiveFormsModule,
+    HasAccessDirective,
+    CircleInfoComponent
 ],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
-  
 })
 export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   constructor(
@@ -66,11 +71,13 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private acivatedRoute : ActivatedRoute,
-    readonly authService:AuthService
+    private acivatedRoute: ActivatedRoute,
+    readonly authService: AuthService,
   ) {}
 
   mockData = BASIC_MOCK;
+
+  userRoles = Roles;
 
   dataSource = new MatTableDataSource<any>([]);
 
@@ -78,10 +85,22 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
 
   private readonly searchSubject = new Subject<string>();
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  //@ViewChild(MatPaginator) paginator!: MatPaginator;
+  // @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) set matPaginator(paginator: MatPaginator) {
+    if (this.dataSource) {
+      this.dataSource.paginator = paginator;
+    }
+  }
+  @ViewChild(MatSort) set matSort(sort: MatSort) {
+    if (this.dataSource) {
+      this.dataSource.sort = sort;
+    }
+  }
 
-  id:string | null = '';
+  id: string | null = '';
+
+  canEdit$: boolean = false;
 
   ngOnInit() {
     this.getEmployees();
@@ -89,13 +108,29 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     this.filteringValues();
     this.acivatedRoute.paramMap.subscribe((params) => {
       this.id = params.get('eid');
-    })
-    //console.log(this.authService.isUserLogged$)
+    });
+
+    this.searchFormControl.valueChanges
+      .pipe(
+        tap(() => (this.isLoading = true)),
+        debounceTime(2000),
+        distinctUntilChanged(),
+      )
+      .subscribe((value) => {
+        this.searchDetails(value);
+        console.log(value);
+      });
+
+    this.authService.userPermissions$.subscribe((user) => {
+      if(user.includes(Roles.ROLE_ADMIN)){
+        this.canEdit$ = true;
+      }
+    });
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.matPaginator;
+    this.dataSource.sort = this.matSort;
     this.dataSource.sortingDataAccessor = (item, property) => {
       const value = item[property];
       if (value) {
@@ -105,32 +140,33 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     };
   }
 
-  showData:boolean = false;
+  showData: boolean = false;
 
-  isLoading:boolean = false;
+  isLoading: boolean = false;
 
-  getEmployees(){
+  getEmployees() {
     this.isLoading = true;
     this.emsService.getEmployees().subscribe({
-      next:(res) => {
+      next: (res) => {
         this.dataSource.data = res;
         this.isLoading = false;
       },
-      error:(err) => {
-        this.snackBar.open('No data found', 'close', {duration :3000, panelClass:['snackbar-error']})
+      error: (err) => {
+        this.snackBar.open('No data found', 'close', {
+          duration: 3000,
+          panelClass: ['snackbar-error'],
+        });
         this.isLoading = false;
-      }
-    })
+      },
+    });
   }
 
-  
   //need to add emp ID
   columnsToDataMapping: ColumnMapping = {
     Id: 'id',
     'First Name': 'name',
     Working: 'currentlyWorking',
     'E-mail': 'email',
-    Salary: 'salary',
   };
 
   columnsToDisplay = Object.keys(this.columnsToDataMapping);
@@ -142,9 +178,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   ];
 
   clickOnEditDetails(id: string) {
-    console.log('edit');
-    console.log(id);
-    this.router.navigate([`${PATH_EDIT_EMPLOYEE}/${id}`]);
+    this.router.navigate([PATH_EMPLOYEE, id, 'edit']);
   }
 
   isEmployeeEligible(emp: any) {
@@ -184,7 +218,8 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
           this.emsService.deleteEmployeeById(empId).subscribe({
             next: () => {
               this.snackBar.open('Employee deleted from server', 'Close', {
-                duration: 3000, panelClass:['snackbar-error']
+                duration: 3000,
+                panelClass: ['snackbar-error'],
               });
             },
             error: (err) => {
@@ -203,41 +238,45 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
         });
       } else {
         this.snackBar.open('Employee is currently working', 'Close', {
-          duration: 3000, panelClass:['snackbar-error']
+          duration: 3000,
+          panelClass: ['snackbar-error'],
         });
       }
     });
   }
 
+  searchFormControl = new FormControl('');
+
   onSearch(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const value = input.value;
-    this.searchSubject.next(value);
-    console.log(value);
+    // const input = event.target as HTMLInputElement;
+    // const value = input.value;
+    // this.searchSubject.next(value);
+    // console.log(value);
   }
 
   setupSearchDebounce(): void {
-    this.searchSubject
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged())
-      .subscribe((value) => {
-        this.searchDetails(value);
-      });
+    // this.searchSubject
+    //   .pipe(
+    //     debounceTime(200),
+    //     distinctUntilChanged())
+    //   .subscribe((value) => {
+    //     this.searchDetails(value);
+    //   });
   }
 
-  searchDetails(value: string) {
+  searchDetails(value: any) {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
+    this.isLoading = false;
     const snapshot = this.acivatedRoute.snapshot;
     console.log(snapshot.queryParams);
   }
 
   filteringValues() {
-    const fieldsToFilter = ['id', 'name', 'email', 'currentlyWorking'];// Add more fields easily here
+    const fieldsToFilter = ['id', 'name', 'email', 'currentlyWorking']; // Add more fields easily here
     this.dataSource.filterPredicate = (data, filter) => {
       const lowerFilter = filter.trim().toLowerCase();
       return fieldsToFilter.some((field) =>
-        String(data[field]).toLowerCase().includes(lowerFilter)
+        String(data[field]).toLowerCase().includes(lowerFilter),
       );
     };
   }
@@ -257,8 +296,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  trackById(index:number, column:any){
+  trackById(index: number, column: any) {
     return column.id;
   }
-  isAdmin$ = this.authService.isAdmin$;
 }

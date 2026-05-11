@@ -43,3 +43,8 @@
 //   display: inline-flex;
 //   align-items: center;
 // }
+
+cdk-virtual-scroll-viewport{
+  min-height: 300px;
+  overflow: auto;
+}

@@ -6,15 +6,15 @@
   <mat-card-content>
     <mat-form-field
       appearance="outline"
-      class="form-field margin-medium-top"
-      *ngIf="isAdmin$ | async"
+      class="form-field margin-large-top"
+      *hasAccess="userRoles.ROLE_ADMIN"
     >
       <mat-label>Search employee</mat-label>
       <mat-icon matPrefix>search</mat-icon>
       <input type="text" matInput [formControl]="searchControl" />
     </mat-form-field>
     <form [formGroup]="userForm">
-      <span class="font-bold margin-small-top"
+      <span class="font-bold margin-large-top"
         >showing roles of {{ loggedInDetails?.username }}</span
       >
 
@@ -40,9 +40,9 @@
         </mat-list-option>
       </mat-selection-list>
 
-      <mat-card-footer *ngIf="isAdmin$ | async" class="align-right gap-10">
+      <mat-card-footer *hasAccess="userRoles.ROLE_ADMIN" class="align-right gap-10">
         <button mat-button (click)="onCancel()">Cancel</button>
-        <button mat-stroked-button (click)="onSubmit()" [disabled]="!userForm">
+        <button mat-stroked-button (click)="onSubmit()" [disabled]="!userForm.dirty || userForm.invalid">
           Save
         </button>
       </mat-card-footer>
