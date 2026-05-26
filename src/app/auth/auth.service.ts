@@ -5,6 +5,8 @@ import {
   Observable,
   ReplaySubject,
   Subscription,
+  debounceTime,
+  delay,
   map,
   shareReplay,
   switchMap,
@@ -72,6 +74,7 @@ export class AuthService {
         password,
       })
       .pipe(
+        delay(3000),
         tap((res) => this.handleAuthSuccess(res)),
         switchMap((res) => this.getUserDetails(res.uid)), // Automatically chains the GET call
       );
@@ -81,7 +84,7 @@ export class AuthService {
     email: string,
     username: string,
     password: string,
-    roles: string,
+    roles: string[],
   ): Observable<any> {
     return this.http
       .post<any>(`${AuthService.BASE_URL}/auth/signup`, {

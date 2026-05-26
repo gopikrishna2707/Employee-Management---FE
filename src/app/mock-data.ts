@@ -432,3 +432,26 @@ export interface DataApi{
   data:string,
   id:number
 }
+
+export const MockChildData:any[] = [
+  {
+    projectDetails: 'Employee Portal Revamp',
+    employeeGrade: 'G5'
+  },
+  {
+    projectDetails: 'E-Commerce Platform',
+    employeeGrade: 'G6'
+  },
+  {
+    projectDetails: 'Banking Dashboard UI',
+    employeeGrade: 'G4'
+  },
+  {
+    projectDetails: 'Healthcare Management System',
+    employeeGrade: 'G7'
+  },
+  {
+    projectDetails: 'AI Chatbot Integration',
+    employeeGrade: 'G5'
+  }
+];

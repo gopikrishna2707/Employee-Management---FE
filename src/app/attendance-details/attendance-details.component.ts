@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, effect, OnInit, signal, ViewChild } from '@angular/core';
 import { ColumnMapping } from '../models/columnToDataMapping';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TableComponent } from '../shared/components/table/table.component';
@@ -12,6 +12,7 @@ import {
   MatLabel,
 } from '@angular/material/form-field';
 import {
+  Form,
   FormControl,
   FormGroup,
   FormsModule,
@@ -29,6 +30,14 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../auth/auth.service';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Employee } from '../models/Employee';
+import { MatChip } from "@angular/material/chips";
+
+export interface practice{
+  name:string,
+  id:number,
+  salary:number
+}
 
 @Component({
   selector: 'app-attendance-details',
@@ -46,7 +55,8 @@ import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/
     MatIconModule,
     NgxSkeletonLoaderModule,
     MatProgressSpinnerModule,
-  ],
+    
+],
   templateUrl: './attendance-details.component.html',
   styleUrl: './attendance-details.component.scss',
 })
@@ -54,7 +64,8 @@ export class AttendanceDetailsComponent implements OnInit {
   constructor(
     private readonly emsService: EmsServiceService,
     readonly authService: AuthService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.getAttendaceDetailsById('s');
@@ -96,5 +107,14 @@ export class AttendanceDetailsComponent implements OnInit {
           this.isLoading = false;
         },
       });
+  }
+
+  counter = this.emsService.counter;
+
+  onIncrement(){
+    this.emsService.increment();
+  }
+  onDecrement(){
+    this.emsService.decrement();
   }
 }

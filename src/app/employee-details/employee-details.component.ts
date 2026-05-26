@@ -28,7 +28,7 @@ import { PATH_ADD_EMPLOYEE, PATH_EMPLOYEE } from '../app.routes';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteEmployeeDialogComponent } from './delete-employee-dialog/delete-employee-dialog.component';
 import { debounceTime, distinctUntilChanged, filter, Subject, tap } from 'rxjs';
-import { BASIC_MOCK } from '../mock-data';
+import { BASIC_MOCK, MockChildData } from '../mock-data';
 import { AuthService } from '../auth/auth.service';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import {
@@ -39,6 +39,8 @@ import { HasAccessDirective } from '../shared/directives/has-access.directive';
 import { UserRoles } from '../models/UserRoles';
 import { Roles } from '../constant';
 import { CircleInfoComponent } from "../shared/components/circle-info/circle-info.component";
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { EmployeeOverviewComponent } from "./employee-overview/employee-overview.component";
 
 @Component({
   selector: 'app-employee-details',
@@ -60,10 +62,18 @@ import { CircleInfoComponent } from "../shared/components/circle-info/circle-inf
     NgxSkeletonLoaderModule,
     ReactiveFormsModule,
     HasAccessDirective,
-    CircleInfoComponent
+    CircleInfoComponent,
+    EmployeeOverviewComponent
 ],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('300ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
+    ])
+  ]
 })
 export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   constructor(
@@ -144,12 +154,16 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
 
   isLoading: boolean = false;
 
+  formFeildLoading:boolean = false;
+
   getEmployees() {
     this.isLoading = true;
+    this.formFeildLoading = true;
     this.emsService.getEmployees().subscribe({
       next: (res) => {
         this.dataSource.data = res;
         this.isLoading = false;
+        this.formFeildLoading = false;
       },
       error: (err) => {
         this.snackBar.open('No data found', 'close', {
@@ -157,6 +171,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
           panelClass: ['snackbar-error'],
         });
         this.isLoading = false;
+        this.formFeildLoading = false;
       },
     });
   }
@@ -175,6 +190,7 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
     ...this.columnsToDisplay,
     'editDetails',
     'action',
+    'expand'
   ];
 
   clickOnEditDetails(id: string) {
@@ -299,4 +315,12 @@ export class EmployeeDetailsComponent implements OnInit, AfterViewInit {
   trackById(index: number, column: any) {
     return column.id;
   }
+
+  expandElement:boolean | any = null;
+
+  toggelRow(element:any){
+    this.expandElement = this.expandElement === element ? null : element;
+  }
+
+  data = MockChildData;
 }

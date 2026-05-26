@@ -83,14 +83,21 @@
     </form>
 
     <div class="button-container" *hasAccess="userRoles.ROLE_ADMIN">
-      <button
+      <!-- <button
         class="btn-cls"
         mat-stroked-button
         [disabled]="!addFormControl.dirty"
         (click)="isEditMode ? updateFormDetails() : saveForm()"
       >
         {{ isEditMode ? "Update" : "Submit" }}
-      </button>
+      </button> -->
+      <app-button
+        [buttonName]="isEditMode ? 'Update' : 'Submit'"
+        [disabled]="!addFormControl.valid"
+        [isLoading]="isSpin"
+        (saveClick)="isEditMode? updateFormDetails():saveForm()"
+      >
+      </app-button>
     </div>
 
     <div class="overlay" *ngIf="isSpin">

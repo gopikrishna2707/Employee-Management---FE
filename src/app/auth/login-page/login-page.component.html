@@ -17,9 +17,11 @@
               <input matInput type="password" formControlName="password" />
             </mat-form-field>
 
-            <button mat-flat-button color="primary" (click)="onSubmit()">
+            <!-- <button mat-flat-button color="primary" (click)="onSubmit()">
               Login
-            </button>
+            </button> -->
+            <app-button [buttonName]="'Login'" [isLoading]="isLoad" [disabled]="!loginForm.valid" (saveClick)="onSubmit()">
+            </app-button>
           </form>
         </div>
       </mat-tab>
@@ -45,7 +47,7 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Role</mat-label>
-              <mat-select formControlName="roles" multiple>
+              <mat-select formControlName="roles">
                 <mat-option *ngFor="let item of userRoles" [value]="item.role">{{item.role}}</mat-option>
               </mat-select>
             </mat-form-field>

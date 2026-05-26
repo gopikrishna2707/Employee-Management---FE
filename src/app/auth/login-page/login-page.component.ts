@@ -15,6 +15,7 @@ import { LoginResponse } from '../../models/LoginResponse';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UserRoles } from '../../models/UserRoles';
+import { ButtonComponent } from "../../shared/components/button/button.component";
 
 export interface loginObj{
     username:string,
@@ -34,7 +35,8 @@ export interface loginObj{
     MatSelect,
     MatOption,
     MatCard,
-    MatTabsModule
+    MatTabsModule,
+    ButtonComponent
 ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
@@ -48,9 +50,9 @@ export class LoginPageComponent implements OnInit {
   toggleForm = false;
 
   userRoles = [
-    { role: UserRoles.ROLE_ADMIN},
     { role: UserRoles.ROLE_EMPLOYEE},
-    { role: UserRoles.ROLE_MANAGER}
+    { role: UserRoles.ROLE_MANAGER},
+    { role:UserRoles.ROLE_ADMIN }
   ];
 
   constructor(
@@ -80,23 +82,32 @@ export class LoginPageComponent implements OnInit {
     })
   }
 
+  isLoad:boolean = false;
+
   onSignupClick() {
+    this.isLoad = true;
     const {email,userNameSignup:username,passwordSignup:password, roles} = this.signUpForm.getRawValue();
 
-    this.authService.sighupUser(email,username,password,roles).subscribe({
+    const roleArray = roles ? [roles] :[];
+
+    this.authService.sighupUser(email,username,password,roleArray).subscribe({
       next:(res) => {
         console.log(res);
         this.router.navigate([PATH_LOGIN]);
       },
       error:(err) => {
         console.log(err);
-      }
+      },
+      complete:() => {
+        this.isLoad = false;
+      },
     })
   }
 
   onSubmit() {
 
     // if (this.loginForm.invalid) return;
+    this.isLoad = true;
     const { username, password } = this.loginForm.value;
     console.log('login clicked');
 
@@ -106,6 +117,7 @@ export class LoginPageComponent implements OnInit {
           duration: 3000
         });
         this.router.navigate([PATH_HOME]);
+        this.isLoad = false;
       },
       error: () => {
         this.snackBar.open(
@@ -113,6 +125,7 @@ export class LoginPageComponent implements OnInit {
           'Close',
           { duration: 3000 }
         );
+        this.isLoad = false;
       }
     });
   }

@@ -42,9 +42,11 @@
 
       <mat-card-footer *hasAccess="userRoles.ROLE_ADMIN" class="align-right gap-10">
         <button mat-button (click)="onCancel()">Cancel</button>
-        <button mat-stroked-button (click)="onSubmit()" [disabled]="!userForm.dirty || userForm.invalid">
+        <!-- <button mat-stroked-button (click)="onSubmit()" [disabled]="!userForm.dirty || userForm.invalid">
           Save
-        </button>
+        </button> -->
+        <app-button [buttonName]="'Save'" [isLoading]="false" [disabled]="!userForm.valid">
+        </app-button>
       </mat-card-footer>
     </form>
   </mat-card-content>

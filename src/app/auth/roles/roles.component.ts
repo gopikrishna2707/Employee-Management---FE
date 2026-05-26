@@ -19,6 +19,7 @@ import { AuthService } from '../../auth/auth.service';
 import { UserDetails } from '../../models/UserDetails';
 import { UserRoles } from '../../models/UserRoles';
 import { HasAccessDirective } from "../../shared/directives/has-access.directive";
+import { ButtonComponent } from "../../shared/components/button/button.component";
 
 @Component({
   selector: 'app-roles',
@@ -33,7 +34,8 @@ import { HasAccessDirective } from "../../shared/directives/has-access.directive
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    HasAccessDirective
+    HasAccessDirective,
+    ButtonComponent
 ],
   templateUrl: './roles.component.html',
   styleUrl: './roles.component.scss',

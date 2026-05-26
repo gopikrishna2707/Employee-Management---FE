@@ -48,3 +48,15 @@ cdk-virtual-scroll-viewport{
   min-height: 300px;
   overflow: auto;
 }
+
+.example-detail-row {
+  height: 0;
+}
+
+.example-detail-row.expanded {
+  height: auto;
+}
+
+td.mat-cell {
+  padding: 0 !important;
+}

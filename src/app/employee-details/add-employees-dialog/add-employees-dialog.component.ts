@@ -19,6 +19,7 @@ import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { AuthService } from '../../auth/auth.service';
 import { HasAccessDirective } from "../../shared/directives/has-access.directive";
 import { UserRoles } from '../../models/UserRoles';
+import { ButtonComponent } from "../../shared/components/button/button.component";
 
 @Component({
   selector: 'app-add-employees-dialog',
@@ -38,7 +39,8 @@ import { UserRoles } from '../../models/UserRoles';
     MatIconButton,
     MatIconModule,
     CommonModule,
-    HasAccessDirective
+    HasAccessDirective,
+    ButtonComponent
 ],
   templateUrl: './add-employees-dialog.component.html',
   styleUrl: './add-employees-dialog.component.scss',

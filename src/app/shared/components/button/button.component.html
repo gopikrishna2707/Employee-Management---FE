@@ -1,4 +1,4 @@
-<p>button works!</p>
-<button mat-button (click)="onSaveClick(true)" [disabled]="disabled">
-{{buttonName}}
+<button mat-stroked-button (click)="onSaveClick()" [disabled]="disabled || isLoading">
+  <mat-spinner *ngIf="isLoading" diameter="20" mode="indeterminate"></mat-spinner>
+  <span *ngIf="!isLoading">{{buttonName()}}</span>
 </button>

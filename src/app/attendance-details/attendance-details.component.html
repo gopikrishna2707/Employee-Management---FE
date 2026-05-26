@@ -25,6 +25,9 @@
           Book Time off
         </button>
       </div>
+      <button mat-button (click)="onIncrement()">+</button>
+      <div>{{counter | async}}</div>
+      <button mat-button (click)="onDecrement()">-</button>
       <mat-card class="margin-medium-top" >
         <table mat-table [dataSource]="dataSource">
           <ng-container

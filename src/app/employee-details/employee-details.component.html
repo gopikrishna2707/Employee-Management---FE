@@ -1,7 +1,7 @@
 <mat-card class="content-margin-30">
   <mat-card-content>
     <div class="margin-small-top form-container">
-      <ng-container *ngIf="isLoading; else formfeild">
+      <ng-container *ngIf="formFeildLoading; else formfeild">
         <ngx-skeleton-loader
           animation="progress-dark"
           count="1"
@@ -17,19 +17,18 @@
         </mat-form-field>
       </ng-template>
       <div *hasAccess="userRoles.ROLE_ADMIN">
-        <ng-container *ngIf="isLoading; else button">
-        <ngx-skeleton-loader
-          animation="progress-dark"
-          count="1"
-          [theme]="{ height: '40px', width: '10vw' }"
-        ></ngx-skeleton-loader>
-      </ng-container>
+        <ng-container *ngIf="formFeildLoading; else button">
+          <ngx-skeleton-loader
+            animation="progress-dark"
+            count="1"
+            [theme]="{ height: '40px', width: '10vw' }"
+          ></ngx-skeleton-loader>
+        </ng-container>
       </div>
       <ng-template #button>
         <button
-        *hasAccess="userRoles.ROLE_ADMIN"
           mat-stroked-button
-          [disabled]="isLoading"
+          [disabled]="formFeildLoading"
           (click)="redirectTo()"
         >
           Add Employee
@@ -37,72 +36,111 @@
       </ng-template>
     </div>
     <ng-container *ngIf="!isLoading; else loader">
-          <table
-            mat-table
-            [dataSource]="dataSource"
-            [trackBy]="trackById"
-            matSort
-            class="mat-elevation-z1"
-          >
-            <ng-container
-              *ngFor="let column of columnsToDisplay; let i = index"
-              [matColumnDef]="column"
-            >
-              <th
-                mat-header-cell
-                *matHeaderCellDef
-                [mat-sort-header]="columnsToDataMapping[column]"
-              >
-                {{ column }}
-              </th>
-              <td mat-cell *matCellDef="let element">
-               <ng-container *ngIf="column === 'Working'">
-                 <app-circle-info [userInfo]="element.currentlyWorking"></app-circle-info>
-               </ng-container>
-               <ng-container *ngIf="column !== 'Working'">
-                {{ element[columnsToDataMapping[column]] }}
-               </ng-container>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="editDetails">
-              <th mat-header-cell *matHeaderCellDef>Details</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-icon-button (click)="clickOnEditDetails(element.eid)">
-                  <mat-icon>{{canEdit$? 'edit':'info'}}</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef>Action</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-icon-button (click)="clickOnDeleteDetails(element)" [disabled]="!canEdit$">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-            <tr
-              mat-header-row
-              *matHeaderRowDef="columnsToDisplayWithAction"
-            ></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: columnsToDisplayWithAction"
-            ></tr>
-            <tr
-              class="margin-small-top"
-              *matNoDataRow
-              [attr.colspan]="columnsToDisplayWithAction.length"
-            >
-              No Data Available
-            </tr>
-          </table>
-        <mat-paginator
-          #paginator
-          showFirstLastButtons
-          pageSize="10"
-          [pageSizeOptions]="[10, 50, 100]"
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        [trackBy]="trackById"
+        matSort
+        class="mat-elevation-z1"
+        multiTemplateDataRows
+      >
+        <ng-container
+          *ngFor="let column of columnsToDisplay; let i = index"
+          [matColumnDef]="column"
         >
-        </mat-paginator>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            [mat-sort-header]="columnsToDataMapping[column]"
+          >
+            {{ column }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="column === 'Working'">
+              <app-circle-info
+                [userInfo]="element.currentlyWorking"
+              ></app-circle-info>
+            </ng-container>
+            <ng-container *ngIf="column !== 'Working'">
+              {{ element[columnsToDataMapping[column]] }}
+            </ng-container>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="editDetails">
+          <th mat-header-cell *matHeaderCellDef>Details</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="clickOnEditDetails(element.eid)">
+              <mat-icon>{{ canEdit$ ? "edit" : "info" }}</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              mat-icon-button
+              (click)="clickOnDeleteDetails(element)"
+              [disabled]="!canEdit$"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="expand">
+          <th mat-header-cell *matHeaderCellDef>More</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="toggelRow(element)">
+              <mat-icon>{{
+                expandElement === element
+                  ? "keyboard_arrow_up"
+                  : "keyboard_arrow_down"
+              }}</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetails">
+          <td
+            mat-cell
+            *matCellDef="let element"
+            [attr.colspan]="columnsToDisplayWithAction.length"
+          >
+            <div
+             
+              [@detailExpand]="
+                element === expandElement ? 'expanded' : 'collapsed'
+              "
+            >
+              <div *ngIf="expandElement === element">
+                <app-employee-overview [data]="data"></app-employee-overview>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithAction"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: columnsToDisplayWithAction"
+        ></tr>
+        <tr
+          class="margin-small-top"
+          *matNoDataRow
+          [attr.colspan]="columnsToDisplayWithAction.length"
+        >
+          No Data Available
+        </tr>
+        <tr mat-row *matRowDef="let element ; columns:['expandedDetails']"
+         [class.expanded]="expandElement === element"
+         class="example-detail-row"
+         ></tr>
+      </table>
+      <mat-paginator
+        #paginator
+        showFirstLastButtons
+        pageSize="10"
+        [pageSizeOptions]="[10, 50, 100]"
+      >
+      </mat-paginator>
     </ng-container>
     <ng-template #loader>
       <div>

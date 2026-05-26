@@ -208,4 +208,20 @@ export class EmsServiceService {
       })
     )
   }
+
+  count = 0;
+
+  counter:Subject<number> = new Subject<number>();
+
+  counter$ = this.counter.asObservable();
+
+  increment(){
+    this.count++;
+    this.counter.next(this.count);
+  }
+
+  decrement(){
+    this.count--;
+    this.counter.next(this.count--);
+  }
 }
